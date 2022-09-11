@@ -1,7 +1,8 @@
 import './App.css';
+import Router from "./shared/Router";
 
-function App() {
-  return <div>App</div>;
-}
+const App = () => {
+  return <Router />;
+};
 
 export default App;
