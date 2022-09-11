@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../../img/logo.png';
+import logo from '../../images/logo.png';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md';

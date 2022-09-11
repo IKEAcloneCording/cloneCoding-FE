@@ -1,14 +1,23 @@
 import React from 'react';
+import styled from 'styled-components';
 import SignUpForm from '../components/SignUp/SignUpForm';
 import SignUpImage from '../components/SignUp/SignUpImage';
+import Container from '../components/Container';
 
 const SignUp = () => {
   return (
-    <div className="flex">
-      <SignUpImage />
-      <SignUpForm />
-    </div>
+    <Container>
+      <ContatinerBox>
+        <SignUpImage />
+        <SignUpForm />
+      </ContatinerBox>
+    </Container>
   );
 };
+
+const ContatinerBox = styled.div`
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+`;
 
 export default SignUp;
