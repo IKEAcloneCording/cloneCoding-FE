@@ -4,7 +4,7 @@ import logo from '../../images/logo.png';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md';
-import { BsTruck } from 'react-icons/bs';
+import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
 
 const Header = () => {
@@ -32,7 +32,7 @@ const Header = () => {
         </Ul>
         <Ul>
           <Li>
-            <BsTruck className="icon" />
+            <FiTruck className="icon" />
             우편 번호 입력
           </Li>
           <Li>
