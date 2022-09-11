@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../../img/logo.png';
+import logo from '../../images/logo.png';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md';
+import { BsTruck } from 'react-icons/bs';
+import { MdStorefront } from 'react-icons/md';
 
 const Header = () => {
   return (
@@ -29,8 +31,14 @@ const Header = () => {
           <Li>서비스</Li>
         </Ul>
         <Ul>
-          <Li>우편 번호 입력</Li>
-          <Li>매장 선택</Li>
+          <Li>
+            <BsTruck className="icon" />
+            우편 번호 입력
+          </Li>
+          <Li>
+            <MdStorefront className="icon" />
+            매장 선택
+          </Li>
         </Ul>
       </HeaderMenu>
     </HeaderBox>
@@ -50,12 +58,10 @@ const HeaderBox = styled.div`
   padding-bottom: 1rem;
   .icon {
     font-size: 22px;
-    /* margin: 0 10px 0 0; */
+    margin-right: 8px;
   }
-  /* background-color: pink; */
 `;
 const HeaderBoxIn = styled.div`
-  /* padding: 20px; */
   display: flex;
   align-items: center;
 
@@ -96,7 +102,11 @@ const ShoppingCart = styled.button`
   border-radius: 100%;
   padding: 8px;
   margin: auto;
-  &:hover {
+  .icon {
+    font-size: 22px;
+    margin: 0;
+  }
+  :hover {
     background-color: #eee;
   }
 `;
@@ -112,13 +122,14 @@ const HeaderMenu = styled.div`
 `;
 const Ul = styled.ul`
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
 `;
 
 const Li = styled.li`
+  display: flex;
   margin-right: 30px;
   cursor: pointer;
-  &:hover {
+  :hover {
     text-decoration: underline;
   }
   :last-child {
