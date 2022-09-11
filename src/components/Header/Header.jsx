@@ -1,17 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../../images/logo.png';
+
+// 아이콘
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md';
 import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigator = useNavigate();
+
   return (
     <HeaderBox>
       <HeaderBoxIn>
-        <HeaderLogo src={logo} />
+        <HeaderLogo
+          src={logo}
+          onClick={() => {
+            navigator('/');
+          }}
+        />
         <GoSearch className="search" />
         <HeaderInput placeholder="검색어 입력"></HeaderInput>
 
@@ -75,6 +85,7 @@ const HeaderBoxIn = styled.div`
 const HeaderLogo = styled.img`
   width: 90px;
   height: 40px;
+  cursor: pointer;
 `;
 const HeaderInput = styled.input`
   width: 1060px;
