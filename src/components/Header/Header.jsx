@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../../images/logo.png';
+import { Link } from 'react-router-dom';
 
 // 아이콘
 import { GoSearch } from 'react-icons/go';
@@ -13,17 +14,20 @@ const Header = () => {
   return (
     <HeaderBox>
       <HeaderBoxIn>
-        <HeaderLogo src={logo} />
+        <Link to="/">
+          <HeaderLogo src={logo} />
+        </Link>
         <GoSearch className="search" />
         <HeaderInput placeholder="검색어 입력"></HeaderInput>
-
         <SignButton>
           <MdOutlinePersonOutline className="icon" />
           Hej! 로그인 또는 가입하기
         </SignButton>
-        <ShoppingCart>
-          <AiOutlineShopping className="icon" />
-        </ShoppingCart>
+        <Link to="/cart">
+          <ShoppingCart>
+            <AiOutlineShopping className="icon" />
+          </ShoppingCart>
+        </Link>
       </HeaderBoxIn>
       <HeaderMenu>
         <Ul>
