@@ -1,9 +1,12 @@
 import { React, useState } from 'react';
 import styled from 'styled-components';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { useNavigate } from 'react-router-dom';
+import { api } from '../../shared/api';
 
 const SignUpForm = () => {
   const open = useDaumPostcodePopup();
+  const navigate = useNavigate();
 
   const [inputValue, setInputValue] = useState({
     name: '',
@@ -12,27 +15,35 @@ const SignUpForm = () => {
     email: '',
     password: '',
   });
+
   const { name, phone_number, address, email, password } =
     inputValue;
 
+  const handleInput = (e) => {
+    const { id, value } = e.target;
+
+    setInputValue({
+      ...inputValue,
+      [id]: value,
+    });
+  };
+
   const isValidEmail =
     email.includes('@') && email.includes('.');
+
   const specialLetter = password.search(
     /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi
   );
+
   const isValidPassword =
     password.length >= 8 && specialLetter >= 1;
+
   const isValidInput =
     name.length >= 1 &&
     phone_number.length >= 1 &&
     address.length >= 1;
 
-  const getIsActive =
-    isValidEmail &&
-    isValidPassword &&
-    isValidInput === true;
-
-  const handleButtonValid = (e) => {
+  const handleButtonValid = async (e) => {
     e.preventDefault();
     if (
       !isValidInput ||
@@ -40,15 +51,24 @@ const SignUpForm = () => {
       !isValidPassword
     ) {
       alert('양식에맞게 채워주세요.');
+      return;
     }
-  };
-
-  const handleInput = (event) => {
-    const { name, value } = event.target;
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
+    try {
+      await api.post(`/api/signup`, {
+        data: {
+          email,
+          password,
+          name,
+          phone_number,
+          address,
+        },
+      });
+      alert('회원가입이 완료되었습니다.');
+      console.log('inputValue2', inputValue);
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleComplete = (data) => {
@@ -67,7 +87,6 @@ const SignUpForm = () => {
       fullAddress +=
         extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    console.log(fullAddress);
   };
 
   const handleClick = () => {
@@ -83,18 +102,21 @@ const SignUpForm = () => {
           id="name"
           type="text"
           onChange={handleInput}
+          dafaultValue={name}
         />
         <Label htmlFor="phone_number">휴대폰</Label>
         <Input
           id="phone_number"
           type="tel"
           onChange={handleInput}
+          defaultValue={phone_number}
         />
         <Label htmlFor="address">주소</Label>
         <Input
           id="address"
           type="text"
           onChange={handleInput}
+          defaultValue={address}
         />
         <AddressBtn type="button" onClick={handleClick}>
           주소 찾기
@@ -104,21 +126,16 @@ const SignUpForm = () => {
           id="email"
           type="email"
           onChange={handleInput}
+          defaultValue={email}
         />
         <Label htmlFor="password">비밀번호</Label>
         <Input
           id="password"
           type="password"
           onChange={handleInput}
+          defaultValue={password}
         />
-        <SubmitBtn
-          className={
-            getIsActive
-              ? 'signUpButtonAction'
-              : 'signUpButtonInaction'
-          }
-          onClick={handleButtonValid}
-        >
+        <SubmitBtn onClick={handleButtonValid}>
           가입 완료하기
         </SubmitBtn>
       </Form>
