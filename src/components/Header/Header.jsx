@@ -8,20 +8,12 @@ import { AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md';
 import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
-  const navigator = useNavigate();
-
   return (
     <HeaderBox>
       <HeaderBoxIn>
-        <HeaderLogo
-          src={logo}
-          onClick={() => {
-            navigator('/');
-          }}
-        />
+        <HeaderLogo src={logo} />
         <GoSearch className="search" />
         <HeaderInput placeholder="검색어 입력"></HeaderInput>
 
