@@ -1,6 +1,6 @@
 import React from 'react';
 import CartItem from '../components/Cart/CartItem';
-import Container from '../components/Container';
+import Container from '../components/Layout/Container';
 import Header from '../components/Header/Header';
 
 const Cart = () => {

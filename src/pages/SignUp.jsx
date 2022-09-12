@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import SignUpForm from '../components/SignUp/SignUpForm';
 import SignUpImage from '../components/SignUp/SignUpImage';
-import Container from '../components/Container';
+import Container from '../components/Layout/Container';
 
 const SignUp = () => {
   return (
