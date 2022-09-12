@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FiUser } from 'react-icons/fi';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
@@ -62,30 +62,79 @@ const CartItem = () => {
       </Container>
       <Container>
         <PriceContainer>
-          <Text>주문내역</Text>
-          <Text>전체배송비</Text>
-          <Text>아직 배송비가 산정되지 않았습니다.</Text>
-          <Text>총 주문 금액</Text>
-          <Text>₩ 2,817,000</Text>
+          <FlexRowBox mb>
+            <Text bold>주문내역</Text>
+          </FlexRowBox>
+          <FlexRowBox mb>
+            <Text>전체배송비</Text>
+            <Text>아직 배송비가 산정되지 않았습니다.</Text>
+          </FlexRowBox>
+          <Hr></Hr>
+          <FlexRowBox>
+            <Text bold>총 주문 금액</Text>
+            <LargeText>₩ 2,817,000</LargeText>
+          </FlexRowBox>
         </PriceContainer>
         <SignInBox>
-          <Text>로그인</Text>
-          <Text>
-            <Link to="/signin">로그인 또는 회원가입</Link>
-          </Text>
-          <Text>하면 더 편리하게 이용하실수 있어요.</Text>
-          <FiUser />
+          <FlexRowBox>
+            <FlexColBox>
+              <Text bold>로그인</Text>
+              <FlexRowBox>
+                <Text underline>
+                  <Link to="/signin">
+                    로그인 또는 회원가입
+                  </Link>
+                </Text>
+                <Text>
+                  하면 더 편리하게 이용하실수 있어요.
+                </Text>
+              </FlexRowBox>
+            </FlexColBox>
+            <H1>
+              <FiUser />
+            </H1>
+          </FlexRowBox>
         </SignInBox>
         <PayBtn>
           <Text bold>결제하기</Text>
-          <BsArrowRightCircleFill />
+          <H1>
+            <BsArrowRightCircleFill />
+          </H1>
         </PayBtn>
-        <FaRegHeart />
-        <MdOutlineShoppingBag />
+        <FlexRowBox start>
+          <FaRegHeart />
+          <DescText>
+            반품 정책 365일 이내에 제품 환불 가능
+          </DescText>
+        </FlexRowBox>
+        <FlexRowBox start>
+          <MdOutlineShoppingBag />
+          <DescText>
+            SSL 데이터 암호화로 안전한 쇼핑
+          </DescText>
+        </FlexRowBox>
       </Container>
     </CartContainer>
   );
 };
+
+const DescText = styled.span`
+  font-size: 14px;
+  text-decoration: underline;
+  color: #484848;
+  font-weight: 700;
+  margin-left: 1rem;
+  cursor: pointer;
+  &:hover {
+    color: #111;
+  }
+`;
+
+const Hr = styled.hr`
+  border-bottom: 2px solid #111;
+  margin-bottom: 1.25rem;
+  height: 0;
+`;
 
 const DescButton = styled.button`
   border-radius: 100%;
@@ -109,7 +158,15 @@ const ProducImg = styled.img`
 
 const FlexRowBox = styled.div`
   display: flex;
+  margin-bottom: ${(props) => (props.mb ? '1.25rem' : 0)};
   justify-content: space-between;
+  ${(props) =>
+    props.start &&
+    css`
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 1.25rem;
+    `}
 `;
 
 const FlexColBox = styled.div`
@@ -151,32 +208,46 @@ const DescContainer = styled.div`
 const BtnBox = styled.div`
   width: 85px;
   height: 53px;
+  display: flex;
+  align-items: center;
 `;
 
 const QuantityBtn = styled.button`
-  padding: 0.78125rem 2.8125rem 0.78125rem 1.5rem;
-  width: 35px;
-  height: 26px;
+  width: 85px;
+  height: 43px;
   font-size: 16px;
   border: 1px solid #dfdfdf;
   border-radius: 50px;
   box-sizing: border-box;
   align-items: center;
   box-sizing: border-box;
+  &:hover {
+    border: 1px solid #929292;
+  }
 `;
 
 const Container = styled.div`
   margin: 0 2rem;
 `;
 
-const DelBtn = styled.button``;
+const DelBtn = styled.button`
+  margin-left: 1.25rem;
+  font-size: 14px;
+  color: #484848;
+  &:hover {
+    color: #111;
+  }
+`;
 
-const PriceContainer = styled.div``;
+const PriceContainer = styled.div`
+  margin: 2.5rem 0;
+`;
 
 const SignInBox = styled.div`
   border: 1px solid rgb(223, 223, 223);
   border-radius: 4px;
   width: 100%;
+  padding: 2rem 1.25rem;
 `;
 
 const PayBtn = styled.button`
@@ -199,6 +270,13 @@ const PayBtn = styled.button`
 const Text = styled.span`
   font-weight: ${(props) => (props.bold ? 700 : 400)};
   font-size: ${(props) => (props.bold ? '16px' : '14px')};
+  text-decoration: ${(props) =>
+    props.underline ? 'underline' : null};
+`;
+
+const LargeText = styled.span`
+  font-size: 22px;
+  font-weight: 700;
 `;
 
 export default CartItem;
