@@ -7,6 +7,7 @@ import { api } from '../../shared/api';
 const SignUpForm = () => {
   const open = useDaumPostcodePopup();
   const navigate = useNavigate();
+  const [kakaoaddress, setKakaoAddress] = useState('');
 
   const [inputValue, setInputValue] = useState({
     name: '',
@@ -25,6 +26,7 @@ const SignUpForm = () => {
     setInputValue({
       ...inputValue,
       [id]: value,
+      address: kakaoaddress,
     });
   };
 
@@ -64,7 +66,6 @@ const SignUpForm = () => {
         },
       });
       alert('회원가입이 완료되었습니다.');
-      console.log('inputValue2', inputValue);
       navigate('/login');
     } catch (error) {
       console.log(error);
@@ -74,6 +75,7 @@ const SignUpForm = () => {
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
+
     if (data.addressType === 'R') {
       if (data.bname !== '') {
         extraAddress += data.bname;
@@ -87,6 +89,7 @@ const SignUpForm = () => {
       fullAddress +=
         extraAddress !== '' ? ` (${extraAddress})` : '';
     }
+    setKakaoAddress(fullAddress);
   };
 
   const handleClick = () => {
@@ -116,7 +119,8 @@ const SignUpForm = () => {
           id="address"
           type="text"
           onChange={handleInput}
-          defaultValue={address}
+          value={kakaoaddress}
+          onClick={handleClick}
         />
         <AddressBtn type="button" onClick={handleClick}>
           주소 찾기
