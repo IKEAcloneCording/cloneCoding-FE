@@ -1,10 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FiUser } from 'react-icons/fi';
-import { BsArrowRightCircleFill } from 'react-icons/bs';
-import { FaRegHeart } from 'react-icons/fa';
-import { MdOutlineShoppingBag } from 'react-icons/md';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 
 const CartItem = () => {
