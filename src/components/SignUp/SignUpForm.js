@@ -12,18 +12,33 @@ const SignUpForm = () => {
     email: '',
     password: '',
   });
-  const { name, phone_number, address, email, password } = inputValue;
+  const { name, phone_number, address, email, password } =
+    inputValue;
 
-  const isValidEmail = email.includes('@') && email.includes('.');
-  const specialLetter = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-  const isValidPassword = password.length >= 8 && specialLetter >= 1;
-  const isValidInput = name.length >= 1 && phone_number.length >= 1 && address.length >= 1;
+  const isValidEmail =
+    email.includes('@') && email.includes('.');
+  const specialLetter = password.search(
+    /[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi
+  );
+  const isValidPassword =
+    password.length >= 8 && specialLetter >= 1;
+  const isValidInput =
+    name.length >= 1 &&
+    phone_number.length >= 1 &&
+    address.length >= 1;
 
-  const getIsActive = isValidEmail && isValidPassword && isValidInput === true;
+  const getIsActive =
+    isValidEmail &&
+    isValidPassword &&
+    isValidInput === true;
 
   const handleButtonValid = (e) => {
     e.preventDefault();
-    if (!isValidInput || !isValidEmail || !isValidPassword) {
+    if (
+      !isValidInput ||
+      !isValidEmail ||
+      !isValidPassword
+    ) {
       alert('양식에맞게 채워주세요.');
     }
   };
@@ -44,9 +59,13 @@ const SignUpForm = () => {
         extraAddress += data.bname;
       }
       if (data.buildingName !== '') {
-        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+        extraAddress +=
+          extraAddress !== ''
+            ? `, ${data.buildingName}`
+            : data.buildingName;
       }
-      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+      fullAddress +=
+        extraAddress !== '' ? ` (${extraAddress})` : '';
     }
     console.log(fullAddress);
   };
@@ -60,19 +79,46 @@ const SignUpForm = () => {
       <Text>IKEA Family에 가입하시겠어요?</Text>
       <Form>
         <Label htmlFor="name">이름</Label>
-        <Input id="name" type="text" onChange={handleInput} />
+        <Input
+          id="name"
+          type="text"
+          onChange={handleInput}
+        />
         <Label htmlFor="phone_number">휴대폰</Label>
-        <Input id="phone_number" type="tel" onChange={handleInput} />
+        <Input
+          id="phone_number"
+          type="tel"
+          onChange={handleInput}
+        />
         <Label htmlFor="address">주소</Label>
-        <Input id="address" type="text" onChange={handleInput} />
+        <Input
+          id="address"
+          type="text"
+          onChange={handleInput}
+        />
         <AddressBtn type="button" onClick={handleClick}>
           주소 찾기
         </AddressBtn>
         <Label htmlFor="email">이메일</Label>
-        <Input id="email" type="email" onChange={handleInput} />
+        <Input
+          id="email"
+          type="email"
+          onChange={handleInput}
+        />
         <Label htmlFor="password">비밀번호</Label>
-        <Input id="password" type="password" onChange={handleInput} />
-        <SubmitBtn className={getIsActive ? 'signUpButtonAction' : 'signUpButtonInaction'} onClick={handleButtonValid}>
+        <Input
+          id="password"
+          type="password"
+          onChange={handleInput}
+        />
+        <SubmitBtn
+          className={
+            getIsActive
+              ? 'signUpButtonAction'
+              : 'signUpButtonInaction'
+          }
+          onClick={handleButtonValid}
+        >
           가입 완료하기
         </SubmitBtn>
       </Form>
