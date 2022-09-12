@@ -9,132 +9,58 @@ import { BiDotsHorizontalRounded } from 'react-icons/bi';
 
 const CartItem = () => {
   return (
-    <CartContainer>
-      <Container>
-        <TitleBox>
-          <H1>장바구니</H1>
-          <DescButton>
-            <BiDotsHorizontalRounded />
-          </DescButton>
-        </TitleBox>
-        <DescContainer>
-          <ContentBox>
-            <ProducImg
-              src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
-              alt="이미지"
-            />
-            <FlexRowBox>
-              <FlexColBox>
-                <DescBox>
-                  <Text bold>
-                    <Link to="/">KLEPPSTAD 클렙스타드</Link>
-                  </Text>
-                  <Text>옷장+도어3, 화이트</Text>
-                  <Text>117x176 cm</Text>
-                </DescBox>
-                <FlexRowBox>
-                  <BtnBox>
-                    <QuantityBtn>
-                      <select
-                        name="quantity"
-                        id="selectQuantity"
-                      >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                      </select>
-                    </QuantityBtn>
-                  </BtnBox>
-                  <DelBtn>삭제</DelBtn>
-                </FlexRowBox>
-              </FlexColBox>
-              <Text bold>₩ 189,000</Text>
-            </FlexRowBox>
-          </ContentBox>
-        </DescContainer>
-      </Container>
-      <Container>
-        <PriceContainer>
-          <FlexRowBox mb>
-            <Text bold>주문내역</Text>
-          </FlexRowBox>
-          <FlexRowBox mb>
-            <Text>전체배송비</Text>
-            <Text>아직 배송비가 산정되지 않았습니다.</Text>
-          </FlexRowBox>
-          <Hr></Hr>
-          <FlexRowBox>
-            <Text bold>총 주문 금액</Text>
-            <LargeText>₩ 2,817,000</LargeText>
-          </FlexRowBox>
-        </PriceContainer>
-        <SignInBox>
+    <Container>
+      <TitleBox>
+        <H1>장바구니</H1>
+        <DescButton>
+          <BiDotsHorizontalRounded />
+        </DescButton>
+      </TitleBox>
+      <DescContainer>
+        <ContentBox>
+          <ProducImg
+            src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
+            alt="이미지"
+          />
           <FlexRowBox>
             <FlexColBox>
-              <Text bold>로그인</Text>
+              <DescBox>
+                <Text bold>
+                  <Link to="/">KLEPPSTAD 클렙스타드</Link>
+                </Text>
+                <Text>옷장+도어3, 화이트</Text>
+                <Text>117x176 cm</Text>
+              </DescBox>
               <FlexRowBox>
-                <Text underline>
-                  <Link to="/signin">
-                    로그인 또는 회원가입
-                  </Link>
-                </Text>
-                <Text>
-                  하면 더 편리하게 이용하실수 있어요.
-                </Text>
+                <BtnBox>
+                  <QuantityBtn>
+                    <select
+                      name="quantity"
+                      id="selectQuantity"
+                    >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
+                  </QuantityBtn>
+                </BtnBox>
+                <DelBtn>삭제</DelBtn>
               </FlexRowBox>
             </FlexColBox>
-            <H1>
-              <FiUser />
-            </H1>
+            <Text bold>₩ 189,000</Text>
           </FlexRowBox>
-        </SignInBox>
-        <PayBtn>
-          <Text bold>결제하기</Text>
-          <H1>
-            <BsArrowRightCircleFill />
-          </H1>
-        </PayBtn>
-        <FlexRowBox start>
-          <FaRegHeart />
-          <DescText>
-            반품 정책 365일 이내에 제품 환불 가능
-          </DescText>
-        </FlexRowBox>
-        <FlexRowBox start>
-          <MdOutlineShoppingBag />
-          <DescText>
-            SSL 데이터 암호화로 안전한 쇼핑
-          </DescText>
-        </FlexRowBox>
-      </Container>
-    </CartContainer>
+        </ContentBox>
+      </DescContainer>
+    </Container>
   );
 };
-
-const DescText = styled.span`
-  font-size: 14px;
-  text-decoration: underline;
-  color: #484848;
-  font-weight: 700;
-  margin-left: 1rem;
-  cursor: pointer;
-  &:hover {
-    color: #111;
-  }
-`;
-
-const Hr = styled.hr`
-  border-bottom: 2px solid #111;
-  margin-bottom: 1.25rem;
-  height: 0;
-`;
 
 const DescButton = styled.button`
   border-radius: 100%;
@@ -239,44 +165,11 @@ const DelBtn = styled.button`
   }
 `;
 
-const PriceContainer = styled.div`
-  margin: 2.5rem 0;
-`;
-
-const SignInBox = styled.div`
-  border: 1px solid rgb(223, 223, 223);
-  border-radius: 4px;
-  width: 100%;
-  padding: 2rem 1.25rem;
-`;
-
-const PayBtn = styled.button`
-  background-color: #0058a3;
-  color: white;
-  font-weight: 700;
-  font-size: 16px;
-  padding: 2.5rem 1.5rem;
-  border-radius: 4px;
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-  margin: 40px 0;
-  width: 100%;
-  &:hover {
-    background-color: #004f93;
-  }
-`;
-
 const Text = styled.span`
   font-weight: ${(props) => (props.bold ? 700 : 400)};
   font-size: ${(props) => (props.bold ? '16px' : '14px')};
   text-decoration: ${(props) =>
     props.underline ? 'underline' : null};
-`;
-
-const LargeText = styled.span`
-  font-size: 22px;
-  font-weight: 700;
 `;
 
 export default CartItem;
