@@ -1,13 +1,14 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
 
-// import SigninReducer from "../src/redux/modules/SignInSlice";
+import SigninReducer from "../modules/SignInSlice";
+import HeaderReducer from "../modules/HeaderSlice";
 
 const middlewares = [thunk];
 // 리듀서 통합
 const rootReducer = combineReducers({
-  // login : SigninReducer,
-
+  login : SigninReducer,
+  header : HeaderReducer,
 });
 // 스토어 연결
 const store = configureStore({

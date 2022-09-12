@@ -10,7 +10,10 @@ const SignInForm = () => {
   const dispatch = useDispatch();
 
   // data 입력 state
-  const [loginData, setloginData] = useState();
+  const [loginData, setloginData] = useState({
+    signinId: '',
+    password: '',
+  });
 
   //input 데이터 저장하기
   const changeInput = (e) => {
@@ -38,11 +41,13 @@ const SignInForm = () => {
         <div>이메일 또는 확인된 휴대폰 번호</div>
         <input
           type="text"
+          id="signinId"
           onChange={changeInput}
           required
         />
         <div>비밀번호</div>
         <input
+          id="password"
           type="password"
           onChange={changeInput}
           required

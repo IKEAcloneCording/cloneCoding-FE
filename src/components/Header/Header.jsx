@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../../images/logo.png';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { sideOpen } from '../../redux/modules/HeaderSlice';
 
-// 아이콘
+// 아이콘,이미지
+import logo from '../../images/logo.png';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlinePersonOutline } from 'react-icons/md';
@@ -11,24 +14,36 @@ import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const [isOpen, setMenu] = useState(false);
+
+  const sideSign = () => {
+    setMenu((isOpen) => !isOpen);
+    dispatch(sideOpen(isOpen));
+  };
+
   return (
     <HeaderBox>
       <HeaderBoxIn>
         <Link to="/">
           <HeaderLogo src={logo} />
         </Link>
+
         <GoSearch className="search" />
         <HeaderInput placeholder="검색어 입력"></HeaderInput>
-        <SignButton>
+
+        <SignButton onClick={() => sideSign()}>
           <MdOutlinePersonOutline className="icon" />
           Hej! 로그인 또는 가입하기
         </SignButton>
+
         <Link to="/cart">
           <ShoppingCart>
             <AiOutlineShopping className="icon" />
           </ShoppingCart>
         </Link>
       </HeaderBoxIn>
+
       <HeaderMenu>
         <Ul>
           <Li>모든 제품</Li>
@@ -50,6 +65,15 @@ const Header = () => {
     </HeaderBox>
   );
 };
+// const Side = styled.div`
+//   background-color: pink;
+//   display: flex;
+//   width: 500px;
+//   height: 100vh;
+//   justify-content: flex-end;
+//   z-index: 2;
+// `;
+
 const HeaderBox = styled.div`
   max-width: 95rem;
   margin: 0 auto;

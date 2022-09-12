@@ -10,8 +10,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-        <Provider store={configStore}>
-      <App />
+      <Provider store={configStore}>
+        <App />
       </Provider>
   </React.StrictMode>
 );
