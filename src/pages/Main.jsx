@@ -1,23 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
-import Container from '../components/Container';
+
 import Header from '../components/Header/Header';
-import visual from '../images/visual.png';
+import Container from '../components/Layout/Container';
+import Visual from '../components/Main/Visual';
+import Category from '../components/Main/Category';
 
 const Main = () => {
   return (
     <div>
       <Header />
       <Container>
-        <img src={visual} />
-        <div></div>
+        <Visual />
+        <Category />
       </Container>
     </div>
   );
 };
-
-// const MainBox = styled.div`
-//   max-width: 95rem;
-// `;
 
 export default Main;
