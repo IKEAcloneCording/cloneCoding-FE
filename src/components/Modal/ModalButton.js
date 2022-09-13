@@ -24,7 +24,6 @@ function ModalButton({ buttonName, title, content }) {
         header={title}
         content={content}
       >
-        {' '}
       </ModalWindow>
     </div>
   );

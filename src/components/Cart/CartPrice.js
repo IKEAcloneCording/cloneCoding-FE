@@ -12,6 +12,10 @@ const CartPrice = () => {
   const [totalPrice, setTotalPrice] = useState('');
   const [deliveryFee, setDeliveryFee] = useState('');
 
+  const paymentHandler = () => {
+    alert("결제하기 서비스는 준비중입니다.")
+  }
+
   return (
     <Container>
       <PriceContainer>
@@ -54,7 +58,7 @@ const CartPrice = () => {
           </H1>
         </FlexRowBox>
       </SignInBox>
-      <PayBtn>
+      <PayBtn onClick={paymentHandler}>
         <Text bold>결제하기</Text>
         <H1>
           <BsArrowRightCircleFill />
