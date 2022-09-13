@@ -27,11 +27,11 @@ const SignInForm = () => {
     e.preventDefault();
     // 가입되지 않은 유저 확인
     const loginState = await dispatch(__login(loginData));
-    if (loginState.type === 'log/LOGIN_LOG/rejected') {
-      alert('아이디 혹은 비밀번호가 틀렸습니다.');
-    }
-    if (loginState.payload) {
+    if (loginState.payload.success === true) {
+      alert('이케아에 오신 것을 환영합니다 :)');
       navigate('/');
+    } else {
+      alert(loginState.payload.error.message);
     }
   };
 
@@ -45,6 +45,10 @@ const SignInForm = () => {
           onChange={changeInput}
           required
         />
+        <p>
+          다른 로그인 옵션 :
+          <span>일회용 코드로 로그인</span>
+        </p>
         <div>비밀번호</div>
         <input
           id="password"
@@ -53,7 +57,7 @@ const SignInForm = () => {
           required
           minLength={8}
         />
-        <button type="submit">로그인</button>
+        <LoginButton type="submit">로그인</LoginButton>
         <div>
           IKEA 계정이 없으신가요? 지금 바로 만들어보세요.
         </div>
@@ -78,19 +82,29 @@ const SignInLayoutBox = styled.div`
     width: 100%;
     height: 45px;
     margin-bottom: 5px;
-    padding: 0 10px;
+    padding: 0 20px;
     font-size: 15px;
     border: 1px solid #999;
     border-radius: 5px;
   }
   button {
     border-radius: 50px;
-    border: 1px solid #999;
+    border: 1px solid #777;
     padding: 18px 100px;
     margin-top: 30px;
+    font-weight: bold;
+    font-size: 14px;
+    &:hover {
+      border: 1px solid #000;
+    }
   }
   div {
-    margin-top: 30px;
+    margin-top: 35px;
+    font-weight: bold;
+  }
+  span {
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 const SignInDiv = styled.form`
@@ -103,4 +117,16 @@ const SignInDiv = styled.form`
   font-size: 13px;
 `;
 
+const LoginButton = styled.button`
+  background-color: #0058a3;
+  color: #fff;
+  border: none;
+  margin-bottom: 25px;
+  &:hover {
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.2)
+    );
+  }
+`;
 export default SignInForm;

@@ -1,25 +1,21 @@
 import React from 'react';
-import styled from 'styled-components';
 import Header from '../components/Header/Header';
 import Container from '../components/Layout/Container';
 import Visual from '../components/Main/Visual';
 import Category from '../components/Main/Category';
-import SideMenu from '../components/Main/SideMenu';
+import ListProduct from '../components/Main/ListProduct';
 
 const Main = () => {
   return (
-    <MainBox>
-      <SideMenu />
+    <div>
       <Header />
       <Container>
         <Visual />
         <Category />
+        <ListProduct />
       </Container>
-    </MainBox>
+    </div>
   );
 };
-const MainBox = styled.div`
-  width: 100vw;
-  height: 100vh;
-`;
+
 export default Main;
