@@ -1,85 +1,161 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { FiUser } from 'react-icons/fi';
 import { api } from '../../shared/api';
 
 const CartItem = ({ cartList, setCartList }) => {
+  const [quantity, setQuantity] = useState('');
 
   // 장바구니 품목 삭제
   const deleteHandler = async (id) => {
     try {
-      await api.delete(`/api/cart/${id}`);
+      const response = await api.delete(`/auth/cart/${id}`);
       const newCartList = cartList.filter((product) => {
         return product.id !== id;
       });
-      alert('삭제되었습니다.');
-      setCartList(newCartList);
+      if (response.success === true) {
+        alert('삭제되었습니다.');
+        setCartList(newCartList);
+      } else {
+        alert(response.data.error.message);
+      }
     } catch (error) {
       console.log(error);
-      // alert(error.response.data.error.message);
     }
   };
+
+  // 장바구니 수량 조절
+  const editHandler = async (id) => {
+    try {
+      const response = await api.put(
+        `/auth/cart/${id}/chage-count`,
+        {
+          count: quantity,
+        }
+      );
+      if (response.success === false) {
+        alert(response.data.error.message);
+      } else {
+        setCartList.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                count: quantity,
+              }
+            : item
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const handleSelected = (e) => {
+  //   console.log('e.target.value', e.target.value);
+  //   setQuantity({ ...quantity, count: e.target.value });
+  //   console.log('quantity', quantity);
+  // };
 
   return (
     <Container>
       <TitleBox>
-        <H1>장바구니</H1>
+        {cartList.length === 0 ? (
+          <Text medium>장바구니가 비어있습니다</Text>
+        ) : (
+          <H1>장바구니</H1>
+        )}
         <DescButton>
           <BiDotsHorizontalRounded />
         </DescButton>
       </TitleBox>
       <DescContainer>
-        <ContentBox>
-          <ProducImg
-            src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
-            alt="이미지"
-          />
-          <FlexRowBox>
-            <FlexColBox>
-              <DescBox>
-                <Text bold>
-                  <Link to="/">KLEPPSTAD 클렙스타드</Link>
-                </Text>
-                <Text>옷장+도어3, 화이트</Text>
-                <Text>117x176 cm</Text>
-              </DescBox>
+        {cartList.length === 0 ? (
+          <SignInBox>
+            <FlexRowBox>
+              <FlexColBox>
+                <Text bold>로그인</Text>
+                <FlexRowBox>
+                  <Text underline>
+                    <Link to="/signin">
+                      로그인 또는 회원가입
+                    </Link>
+                  </Text>
+                  <Text>
+                    하면 더 편리하게 이용하실수 있어요.
+                  </Text>
+                </FlexRowBox>
+              </FlexColBox>
+              <H1>
+                <FiUser />
+              </H1>
+            </FlexRowBox>
+          </SignInBox>
+        ) : (
+          cartList.map((item) => (
+            <ContentBox key={item.product.id}>
+              <ProducImg
+                src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
+                alt="이미지"
+              />
               <FlexRowBox>
-                <BtnBox>
-                  <QuantityBtn>
-                    <select
-                      name="quantity"
-                      id="selectQuantity"
+                <FlexColBox>
+                  <DescBox>
+                    <Text bold>
+                      <Link to="/">
+                        {item.product.name}
+                      </Link>
+                    </Text>
+                    <Text>옷장+도어3, 화이트</Text>
+                    <Text>117x176 cm</Text>
+                  </DescBox>
+                  <FlexRowBox>
+                    <BtnBox>
+                      <QuantityBtn>
+                        <select
+                          name="quantity"
+                          id="selectQuantity"
+                          onChange={editHandler}
+                        >
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                        </select>
+                      </QuantityBtn>
+                    </BtnBox>
+                    <DelBtn
+                      onClick={() => {
+                        deleteHandler(item.product.id);
+                      }}
                     >
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                    </select>
-                  </QuantityBtn>
-                </BtnBox>
-                <DelBtn
-                  onClick={() => {
-                    deleteHandler();
-                  }}
-                >
-                  삭제
-                </DelBtn>
+                      삭제
+                    </DelBtn>
+                  </FlexRowBox>
+                </FlexColBox>
+                <Text bold>₩ {item.product.price}</Text>
               </FlexRowBox>
-            </FlexColBox>
-            <Text bold>₩ 189,000</Text>
-          </FlexRowBox>
-        </ContentBox>
+            </ContentBox>
+          ))
+        )}
       </DescContainer>
     </Container>
   );
 };
+
+const SignInBox = styled.div`
+  border: 1px solid rgb(223, 223, 223);
+  border-radius: 4px;
+  width: 100%;
+  padding: 2rem 1.25rem;
+`;
 
 const DescButton = styled.button`
   border-radius: 100%;
@@ -185,6 +261,13 @@ const Text = styled.span`
   font-size: ${(props) => (props.bold ? '16px' : '14px')};
   text-decoration: ${(props) =>
     props.underline ? 'underline' : null};
+  ${(props) =>
+    props.medium &&
+    css`
+      font-size: 24px;
+      font-weight: 700;
+      margin: 1.25rem;
+    `};
 `;
 
 export default CartItem;
