@@ -56,17 +56,19 @@ const SignUpForm = () => {
       return;
     }
     try {
-      await api.post(`/signup`, {
-        data: {
-          email,
-          password,
-          name,
-          phone_number,
-          address,
-        },
+      const response = await api.post(`/signup`, {
+        email,
+        password,
+        name,
+        phone_number,
+        address,
       });
-      alert('회원가입이 완료되었습니다.');
-      navigate('/login');
+      if (response.success === true) {
+        alert('회원가입이 완료되었습니다.');
+        navigate('/signin');
+      } else {
+        alert(response.data.error.message);
+      }
     } catch (error) {
       console.log(error);
     }

@@ -5,7 +5,8 @@ import { FiUser } from 'react-icons/fi';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
 import { FaRegHeart } from 'react-icons/fa';
 import { MdOutlineShoppingBag } from 'react-icons/md';
-import CartModal from './CartModal';
+import RefundModal from './RefundModal';
+import SSLModal from './SSLModal';
 import ModalButton from '../Modal/ModalButton';
 
 const CartPrice = () => {
@@ -13,8 +14,8 @@ const CartPrice = () => {
   const [deliveryFee, setDeliveryFee] = useState('');
 
   const paymentHandler = () => {
-    alert("결제하기 서비스는 준비중입니다.")
-  }
+    alert('결제하기 서비스는 준비중입니다.');
+  };
 
   return (
     <Container>
@@ -69,7 +70,7 @@ const CartPrice = () => {
         <DescText>
           <ModalButton
             buttonName="반품 정책 365일 이내에 제품 환불 가능"
-            content={<CartModal />}
+            content={<RefundModal />}
           />
         </DescText>
       </FlexRowBox>
@@ -78,7 +79,7 @@ const CartPrice = () => {
         <DescText>
           <ModalButton
             buttonName="SSL 데이터 암호화로 안전한 쇼핑"
-            content={<CartModal />}
+            content={<SSLModal />}
           />
         </DescText>
       </FlexRowBox>
