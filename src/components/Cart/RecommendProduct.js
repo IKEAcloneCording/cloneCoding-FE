@@ -12,18 +12,24 @@ const RecommendProduct = ({
 }) => {
   // 장바구니 추가
   const addItem = async (id) => {
-    try {
-      const response = await api.post(`/auth/cart`, {
-        productId: 2,
-        count: 1,
-      });
-      if (response.success === true) {
-        setCartList([...cartList, response.data]);
-      } else {
-        alert(response.data.error.message);
+    // 로그인 유무 확인
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await api.post(`/auth/cart`, {
+          productId: 2,
+          count: 1,
+        });
+        if (response.success === true) {
+          setCartList([...cartList, response.data]);
+        } else {
+          alert(response.data.error.message);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      localStorage.setItem('cart', `productId : 테스트`);
     }
   };
 
