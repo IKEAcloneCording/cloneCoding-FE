@@ -56,7 +56,7 @@ const SignUpForm = () => {
       return;
     }
     try {
-      await api.post(`/api/signup`, {
+      await api.post(`/signup`, {
         data: {
           email,
           password,

@@ -2,7 +2,7 @@ import axios from "axios";
 
 // axios 기본 주소 & header 타입 세팅
 export const api = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "http://13.209.88.134/api/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -16,5 +16,4 @@ api.interceptors.request.use(function (config) {
   config.headers.common["authorization"] = `${accessToken}`;
   config.headers.common['refresh-token'] = `${refreshToken}`;
   return config;
- 
 });

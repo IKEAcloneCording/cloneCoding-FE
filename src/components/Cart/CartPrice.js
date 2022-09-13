@@ -69,7 +69,6 @@ const CartPrice = () => {
         <DescText>
           <ModalButton
             buttonName="반품 정책 365일 이내에 제품 환불 가능"
-            title="마음이 바뀌어도 괜찮습니다."
             content={<CartModal />}
           />
         </DescText>
@@ -79,7 +78,6 @@ const CartPrice = () => {
         <DescText>
           <ModalButton
             buttonName="SSL 데이터 암호화로 안전한 쇼핑"
-            title="이 사이트는 안전합니다"
             content={<CartModal />}
           />
         </DescText>
