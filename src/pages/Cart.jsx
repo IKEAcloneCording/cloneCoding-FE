@@ -10,6 +10,7 @@ import RecommendProduct from '../components/Cart/RecommendProduct';
 
 const Cart = () => {
   const [cartList, setCartList] = useState('');
+  const [productList, setProductList] = useState('');
 
   // 장바구니 조회 api
   const fetchCartList = async () => {
@@ -19,8 +20,15 @@ const Cart = () => {
     setCartList(data);
   };
 
+  // 상품 조회
+  const fetchProductList = async () => {
+    const { data } = await api.get(`/products`);
+    setProductList(data.data);
+  };
+
   useEffect(() => {
     fetchCartList();
+    fetchProductList();
   }, []);
 
   return (
@@ -32,11 +40,11 @@ const Cart = () => {
             cartList={cartList}
             setCartList={setCartList}
           />
-          <CartPrice />
+          {cartList.length === 0 ? null : <CartPrice />}
         </CartContainer>
         <RecommendProduct
-          cartList={cartList}
-          setCartList={setCartList}
+          productList={productList}
+          setProductList={setProductList}
         />
       </Container>
     </div>

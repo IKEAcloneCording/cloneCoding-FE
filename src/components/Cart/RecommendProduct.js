@@ -3,35 +3,46 @@ import styled, { css } from 'styled-components';
 import { TbShoppingCartPlus } from 'react-icons/tb';
 import { FaRegHeart } from 'react-icons/fa';
 
-const RecommendProduct = ({ cartList, setCartList }) => {
+const RecommendProduct = ({
+  productList,
+  setProductList,
+}) => {
   return (
     <>
       <Container>
         <Text large>추천제품</Text>
         <Items>
-          <Item>
-            <img
-              src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
-              alt="제품사진"
-            />
-            <DescBox>
-              <TextArea>
-                <Text bold>
-                  LINNMON 린몬 / ADILS 아딜스
-                </Text>
-                <Text>옷장+도어3, 화이트, 117x176 cm</Text>
-              </TextArea>
-              <Text medium>₩ 39000</Text>
-              <BtnBox>
-                <Btn>
-                  <FaRegHeart />
-                </Btn>
-                <Btn blue>
-                  <TbShoppingCartPlus />
-                </Btn>
-              </BtnBox>
-            </DescBox>
-          </Item>
+          {productList.length === 0 ? (
+            <Text medium>추천 제품이 없습니다.</Text>
+          ) : (
+            productList.map((item) => (
+              <Item>
+                <img
+                  src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
+                  alt="제품사진"
+                />
+                <DescBox>
+                  <TextArea>
+                    <Text bold>
+                      LINNMON 린몬 / ADILS 아딜스
+                    </Text>
+                    <Text>
+                      옷장+도어3, 화이트, 117x176 cm
+                    </Text>
+                  </TextArea>
+                  <Text medium>₩ 39000</Text>
+                  <BtnBox>
+                    <Btn>
+                      <FaRegHeart />
+                    </Btn>
+                    <Btn blue>
+                      <TbShoppingCartPlus />
+                    </Btn>
+                  </BtnBox>
+                </DescBox>
+              </Item>
+            ))
+          )}
         </Items>
       </Container>
     </>
