@@ -11,7 +11,7 @@ const CartItem = ({ cartList, setCartList }) => {
   // 장바구니 품목 삭제
   const deleteHandler = async (id) => {
     try {
-      const response = await api.delete(`/cart/${id}`);
+      const response = await api.delete(`/auth/cart/${id}`);
       const newCartList = cartList.filter((product) => {
         return product.id !== id;
       });
@@ -32,7 +32,7 @@ const CartItem = ({ cartList, setCartList }) => {
       const response = await api.put(
         `/auth/cart/${id}/chage-count`,
         {
-          count: { quantity },
+          count: quantity,
         }
       );
       if (response.success === false) {
@@ -52,6 +52,12 @@ const CartItem = ({ cartList, setCartList }) => {
     }
   };
 
+  // const handleSelected = (e) => {
+  //   console.log('e.target.value', e.target.value);
+  //   setQuantity({ ...quantity, count: e.target.value });
+  //   console.log('quantity', quantity);
+  // };
+
   return (
     <Container>
       <TitleBox>
@@ -66,28 +72,26 @@ const CartItem = ({ cartList, setCartList }) => {
       </TitleBox>
       <DescContainer>
         {cartList.length === 0 ? (
-          <>
-            <SignInBox>
-              <FlexRowBox>
-                <FlexColBox>
-                  <Text bold>로그인</Text>
-                  <FlexRowBox>
-                    <Text underline>
-                      <Link to="/signin">
-                        로그인 또는 회원가입
-                      </Link>
-                    </Text>
-                    <Text>
-                      하면 더 편리하게 이용하실수 있어요.
-                    </Text>
-                  </FlexRowBox>
-                </FlexColBox>
-                <H1>
-                  <FiUser />
-                </H1>
-              </FlexRowBox>
-            </SignInBox>
-          </>
+          <SignInBox>
+            <FlexRowBox>
+              <FlexColBox>
+                <Text bold>로그인</Text>
+                <FlexRowBox>
+                  <Text underline>
+                    <Link to="/signin">
+                      로그인 또는 회원가입
+                    </Link>
+                  </Text>
+                  <Text>
+                    하면 더 편리하게 이용하실수 있어요.
+                  </Text>
+                </FlexRowBox>
+              </FlexColBox>
+              <H1>
+                <FiUser />
+              </H1>
+            </FlexRowBox>
+          </SignInBox>
         ) : (
           cartList.map((item) => (
             <ContentBox key={item.product.id}>
@@ -112,6 +116,7 @@ const CartItem = ({ cartList, setCartList }) => {
                         <select
                           name="quantity"
                           id="selectQuantity"
+                          onChange={editHandler}
                         >
                           <option value="1">1</option>
                           <option value="2">2</option>

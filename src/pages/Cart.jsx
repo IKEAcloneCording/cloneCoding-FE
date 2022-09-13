@@ -45,6 +45,8 @@ const Cart = () => {
         <RecommendProduct
           productList={productList}
           setProductList={setProductList}
+          cartList={cartList}
+          setCartList={setCartList}
         />
       </Container>
     </div>

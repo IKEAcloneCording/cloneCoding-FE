@@ -2,50 +2,94 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { TbShoppingCartPlus } from 'react-icons/tb';
 import { FaRegHeart } from 'react-icons/fa';
+import { api } from '../../shared/api';
 
 const RecommendProduct = ({
   productList,
   setProductList,
+  cartList,
+  setCartList,
 }) => {
+  // 장바구니 추가
+  const addItem = async (id) => {
+    try {
+      const response = await api.post(`/auth/cart`, {
+        productId: 2,
+        count: 1,
+      });
+      if (response.success === true) {
+        setCartList([...cartList, response.data]);
+      } else {
+        alert(response.data.error.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <>
-      <Container>
-        <Text large>추천제품</Text>
-        <Items>
-          {productList.length === 0 ? (
-            <Text medium>추천 제품이 없습니다.</Text>
-          ) : (
-            productList.map((item) => (
-              <Item>
-                <img
-                  src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
-                  alt="제품사진"
-                />
-                <DescBox>
-                  <TextArea>
-                    <Text bold>
-                      LINNMON 린몬 / ADILS 아딜스
-                    </Text>
-                    <Text>
-                      옷장+도어3, 화이트, 117x176 cm
-                    </Text>
-                  </TextArea>
-                  <Text medium>₩ 39000</Text>
-                  <BtnBox>
-                    <Btn>
-                      <FaRegHeart />
-                    </Btn>
-                    <Btn blue>
-                      <TbShoppingCartPlus />
-                    </Btn>
-                  </BtnBox>
-                </DescBox>
-              </Item>
-            ))
-          )}
-        </Items>
-      </Container>
-    </>
+    <Container>
+      <Text large>추천제품</Text>
+      <Items>
+        {productList.length === 0 ? (
+          <Text medium>추천 제품이 없습니다.</Text>
+        ) : (
+          productList.map((item) => (
+            <Item>
+              <img
+                src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
+                alt="제품사진"
+              />
+              <DescBox>
+                <TextArea>
+                  <Text bold>
+                    LINNMON 린몬 / ADILS 아딜스
+                  </Text>
+                  <Text>
+                    옷장+도어3, 화이트, 117x176 cm
+                  </Text>
+                </TextArea>
+                <Text medium>₩ 39000</Text>
+                <BtnBox>
+                  <Btn>
+                    <FaRegHeart />
+                  </Btn>
+                  <Btn blue>
+                    <TbShoppingCartPlus />
+                  </Btn>
+                </BtnBox>
+              </DescBox>
+            </Item>
+          ))
+        )}
+        <Item>
+          <img
+            src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
+            alt="제품사진"
+          />
+          <DescBox>
+            <TextArea>
+              <Text bold>LINNMON 린몬 / ADILS 아딜스</Text>
+              <Text>옷장+도어3, 화이트, 117x176 cm</Text>
+            </TextArea>
+            <Text medium>₩ 39000</Text>
+            <BtnBox>
+              <Btn>
+                <FaRegHeart />
+              </Btn>
+              <Btn
+                blue
+                onClick={() => {
+                  addItem();
+                }}
+              >
+                <TbShoppingCartPlus />
+              </Btn>
+            </BtnBox>
+          </DescBox>
+        </Item>
+      </Items>
+    </Container>
   );
 };
 
