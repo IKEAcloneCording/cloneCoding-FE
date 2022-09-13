@@ -11,7 +11,7 @@ const SignInForm = () => {
 
   // data 입력 state
   const [loginData, setloginData] = useState({
-    signinId: '',
+    email: '',
     password: '',
   });
 
@@ -40,8 +40,8 @@ const SignInForm = () => {
       <SignInDiv onSubmit={submitLogin}>
         <div>이메일 또는 확인된 휴대폰 번호</div>
         <input
-          type="text"
-          id="signinId"
+          type="email"
+          id="email"
           onChange={changeInput}
           required
         />
@@ -103,5 +103,4 @@ const SignInDiv = styled.form`
   font-size: 13px;
 `;
 
-const SignInInput = styled.input``;
 export default SignInForm;

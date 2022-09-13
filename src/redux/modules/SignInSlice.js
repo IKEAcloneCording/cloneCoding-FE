@@ -8,10 +8,10 @@ import { api } from "../../shared/api";
 export const __login = createAsyncThunk(
   "log/LOGIN_LOG",
   async (payload, thunkAPI) => {
-    const response = await api.post("/signin", payload);
+    const response = await api.post("/api/user/login", payload);
     // 토큰 localstorge 저장하기
-    // localStorage.setItem("authorization", response.headers.authorization);
-    // localStorage.setItem("refresh-token", response.headers["refresh-token"]);
+    localStorage.setItem("authorization", response.headers.authorization);
+    localStorage.setItem("refresh-token", response.headers["refresh-token"]);
     return response.data;
   }
 );
@@ -20,7 +20,7 @@ export const __login = createAsyncThunk(
 const loginSlice = createSlice({
   name: "login",
   initialState: {
-    // user: { nickName: "",result: false },
+    user: { nickName: "", result: false },
     loading: false,
     error: null,
   },
@@ -34,7 +34,7 @@ const loginSlice = createSlice({
       //로그인
       .addCase(__login.fulfilled, (state, action) => {
         state.loading = false;
-        state.signinId = {
+        state.user = {
           nickName: action.payload.nickName,
           result: action.payload.result,
         };

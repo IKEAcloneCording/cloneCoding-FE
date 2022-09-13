@@ -12,7 +12,24 @@
       "postId": 1
     }
   ],
-  "profile": {
-    "name": "typicode"
-  }
+  "data": [
+			{
+				"id": 1,
+        "name": "침대",
+        "image": "imageurl",
+				"price": "60000원"
+				},
+				{
+				"id": 2,
+        "name": "의자",
+        "image": "imageurl",
+				"price": "30000원"
+				},
+				{
+				"id": 3,
+        "name": "책상",
+        "image": "imageurl",
+				"price": "50000원"
+				}
+  ]
 }

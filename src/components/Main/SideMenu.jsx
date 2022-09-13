@@ -21,7 +21,7 @@ const SideMenu = () => {
   };
   console.log(isOpen);
   return (
-    <>
+    <SideMenuBox>
       {isOpen ? (
         <SideOpen>
           <SideDiv>
@@ -34,6 +34,7 @@ const SideMenu = () => {
                 <LoginButton
                   onClick={() => {
                     navigate('/signin');
+                    sideSign();
                   }}
                 >
                   로그인
@@ -87,12 +88,12 @@ const SideMenu = () => {
       ) : (
         <SideClose />
       )}
-    </>
+    </SideMenuBox>
   );
 };
 const open = keyframes`
   0% {
-    right:-1000px
+    right:-500px
   }
   100% {
     right:0
@@ -103,10 +104,12 @@ const close = keyframes`
     right: 0
   }
   100% {
-    right:-1000px
+    right:-500px
   }
 `;
-
+const SideMenuBox = styled.div`
+  width: 100%;
+`;
 const SideOpen = styled.div`
   background-color: #fff;
   display: flex;
@@ -130,7 +133,7 @@ const SideOpen = styled.div`
   }
   div {
   }
-  animation: ${open} 0.3s linear backwards;
+  animation: ${open} 0.2s linear forwards;
 `;
 const SideClose = styled.div`
   background-color: #0058a3;
@@ -139,8 +142,8 @@ const SideClose = styled.div`
   height: 100vh;
   z-index: 2;
   position: absolute;
-  right: -1000px;
-  animation: ${close} 0.3s linear backwards;
+  right: -500px;
+  animation: ${close} 0.2s linear forwards;
 `;
 const SideDiv = styled.div`
   background-color: #0058a3;
