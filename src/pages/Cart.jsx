@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CartItem from '../components/Cart/CartItem';
 import Container from '../components/Layout/Container';
 import Header from '../components/Header/Header';
 import CartPrice from '../components/Cart/CartPrice';
+import { api } from '../shared/api';
 
 const Cart = () => {
+  const [cartList, setCartList] = useState('');
+
+  // 장바구니 조회 api
+  const fetchCartList = async () => {
+    const { data } = await api.get(`/api/cart`);
+    setCartList(data.product);
+  };
+
+  useEffect(() => {
+    fetchCartList();
+  }, []);
+
   return (
     <div>
       <Header />
       <Container>
         <CartContainer>
-          <CartItem />
+          <CartItem
+            cartList={cartList}
+            setCartList={setCartList}
+          />
           <CartPrice />
         </CartContainer>
       </Container>

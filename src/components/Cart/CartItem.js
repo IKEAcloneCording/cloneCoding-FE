@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { api } from '../../shared/api';
 
-const CartItem = () => {
+const CartItem = ({ cartList, setCartList }) => {
+
+  // 장바구니 품목 삭제
+  const deleteHandler = async (id) => {
+    try {
+      await api.delete(`/api/cart/${id}`);
+      const newCartList = cartList.filter((product) => {
+        return product.id !== id;
+      });
+      alert('삭제되었습니다.');
+      setCartList(newCartList);
+    } catch (error) {
+      console.log(error);
+      // alert(error.response.data.error.message);
+    }
+  };
+
   return (
     <Container>
       <TitleBox>
@@ -47,7 +64,13 @@ const CartItem = () => {
                     </select>
                   </QuantityBtn>
                 </BtnBox>
-                <DelBtn>삭제</DelBtn>
+                <DelBtn
+                  onClick={() => {
+                    deleteHandler();
+                  }}
+                >
+                  삭제
+                </DelBtn>
               </FlexRowBox>
             </FlexColBox>
             <Text bold>₩ 189,000</Text>
@@ -65,12 +88,6 @@ const DescButton = styled.button`
   &:hover {
     background-color: rgb(245, 245, 245);
   }
-`;
-
-const CartContainer = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  column-gap: 2rem;
 `;
 
 const ProducImg = styled.img`
@@ -108,12 +125,14 @@ const ContentBox = styled.div`
   display: grid;
   grid-template-columns: 140px auto;
   width: 100%;
+  border-bottom: 1px solid #dfdfdf;
 `;
 
 const TitleBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 1.25rem 0;
 `;
 
 const H1 = styled.h1`
@@ -124,7 +143,7 @@ const H1 = styled.h1`
 const DescContainer = styled.div`
   margin: 2.5rem 0;
   box-sizing: border-box;
-  display: flex;
+  display: grid;
 `;
 
 const BtnBox = styled.div`

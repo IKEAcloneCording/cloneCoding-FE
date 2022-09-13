@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FiUser } from 'react-icons/fi';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
 import { FaRegHeart } from 'react-icons/fa';
 import { MdOutlineShoppingBag } from 'react-icons/md';
+import CartModal from './CartModal';
+import ModalButton from '../Modal/ModalButton';
 
 const CartPrice = () => {
+  const [totalPrice, setTotalPrice] = useState('');
+  const [deliveryFee, setDeliveryFee] = useState('');
+
   return (
     <Container>
       <PriceContainer>
@@ -15,12 +20,18 @@ const CartPrice = () => {
         </FlexRowBox>
         <FlexRowBox mb>
           <Text>전체배송비</Text>
-          <Text>아직 배송비가 산정되지 않았습니다.</Text>
+          <Text>
+            {deliveryFee
+              ? { deliveryFee }
+              : `아직 배송비가 산정되지 않았습니다`}
+          </Text>
         </FlexRowBox>
         <Hr></Hr>
         <FlexRowBox>
           <Text bold>총 주문 금액</Text>
-          <LargeText>₩ 2,817,000</LargeText>
+          <LargeText>
+            ₩ {totalPrice ? { totalPrice } : `0`}
+          </LargeText>
         </FlexRowBox>
       </PriceContainer>
       <SignInBox>
@@ -52,12 +63,22 @@ const CartPrice = () => {
       <FlexRowBox start>
         <FaRegHeart />
         <DescText>
-          반품 정책 365일 이내에 제품 환불 가능
+          <ModalButton
+            buttonName="반품 정책 365일 이내에 제품 환불 가능"
+            title="마음이 바뀌어도 괜찮습니다."
+            content={<CartModal />}
+          />
         </DescText>
       </FlexRowBox>
       <FlexRowBox start>
         <MdOutlineShoppingBag />
-        <DescText>SSL 데이터 암호화로 안전한 쇼핑</DescText>
+        <DescText>
+          <ModalButton
+            buttonName="SSL 데이터 암호화로 안전한 쇼핑"
+            title="이 사이트는 안전합니다"
+            content={<CartModal />}
+          />
+        </DescText>
       </FlexRowBox>
     </Container>
   );
