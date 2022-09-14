@@ -145,12 +145,15 @@ const CartItem = ({ cart, setCart, fetchCart }) => {
                   <ProducImg
                     src={item.product.imageUrl}
                     alt="제품 썸네일 이미지"
+                    onClick={() => {
+                      goToDetail(item.product.id);
+                    }}
                   />
                   <FlexRowBox>
                     <FlexColBox>
                       <DescBox>
                         <Text
-                          bold
+                          link
                           onClick={() => {
                             goToDetail(item.product.id);
                           }}
@@ -208,7 +211,9 @@ const CartItem = ({ cart, setCart, fetchCart }) => {
                     </FlexColBox>
                     <FlexColBox end>
                       <Text small>개당 금액</Text>
-                      <Text bold>₩ {item.product.price}</Text>
+                      <Text bold>
+                        ₩ {item.product.price}
+                      </Text>
                     </FlexColBox>
                   </FlexRowBox>
                 </ContentBox>
@@ -236,6 +241,7 @@ const DescButton = styled.button`
 `;
 
 const ProducImg = styled.img`
+  cursor: pointer;
   margin-right: 1rem;
   width: 140px;
   height: 140px;
@@ -257,7 +263,8 @@ const FlexRowBox = styled.div`
 const FlexColBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: ${(props) => (props.end ? 'flex-end' : "flex-start")};
+  align-items: ${(props) =>
+    props.end ? 'flex-end' : 'flex-start'};
 `;
 
 const DescBox = styled.div`
@@ -327,10 +334,16 @@ const DelBtn = styled.button`
 `;
 
 const Text = styled.span`
-  font-weight: ${(props) => (props.bold ? 700 : 400)};
-  font-size: ${(props) => (props.bold ? '16px' : '14px')};
+  font-weight: 400;
+  font-size: 14px;
   text-decoration: ${(props) =>
     props.underline ? 'underline' : null};
+  ${(props) =>
+    props.bold &&
+    css`
+      font-weight: 700;
+      font-size: 16px;
+    `};
   ${(props) =>
     props.medium &&
     css`
@@ -338,10 +351,20 @@ const Text = styled.span`
       font-weight: 700;
       margin: 1.25rem;
     `};
-    ${(props) =>
+  ${(props) =>
     props.small &&
     css`
       font-size: 12px;
+    `};
+  ${(props) =>
+    props.link &&
+    css`
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     `};
 `;
 

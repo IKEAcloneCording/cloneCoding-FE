@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled, { css } from 'styled-components';
 import { TbShoppingCartPlus } from 'react-icons/tb';
 import { FaRegHeart } from 'react-icons/fa';
 import { api } from '../../shared/api';
+import { useNavigate } from 'react-router-dom';
 
 const RecommendProduct = ({
   recommendList,
@@ -12,6 +13,18 @@ const RecommendProduct = ({
   setCart,
   fetchCart,
 }) => {
+  const [over, setOver] = useState(false);
+  const navigate = useNavigate();
+
+  // 디테일 페이지로 이동
+  const goToDetail = (id) => {
+    navigate(`/detail/${id}`, {
+      state: {
+        id: id,
+      },
+    });
+  };
+
   // 장바구니 추가
   const addItem = async (id) => {
     // 로그인 유무 확인
@@ -62,11 +75,27 @@ const RecommendProduct = ({
           <Text medium>추천 제품이 없습니다.</Text>
         ) : (
           recommendList.map((item) => (
-            <Item key={item.id} onClick={() => {}}>
-              <img src={item.image_url} alt="제품이미지" />
+            <Item
+              key={item.id}
+              onMouseOver={() => {
+                setOver(true);
+              }}
+              onMouseOut={() => {
+                setOver(false);
+              }}
+            >
+              <img
+                src={
+                  over ? item.subImage_url : item.image_url
+                }
+                alt="제품이미지"
+                onClick={() => {
+                  goToDetail(item.id);
+                }}
+              />
               <DescBox>
                 <TextArea>
-                  <Text bold>{item.name}</Text>
+                  <Text link>{item.name}</Text>
                   <Text>
                     {item.description} {item.measurement}
                   </Text>
@@ -144,7 +173,7 @@ const Btn = styled.button`
 
 const TextArea = styled.div`
   margin-top: 2.0625rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 `;
 
 const Container = styled.div`
@@ -159,7 +188,6 @@ const Container = styled.div`
 const Text = styled.span`
   color: #111;
   font-size: 14px;
-  margin-bottom: 0.5rem;
   font-weight: 400;
   ${(props) =>
     props.bold &&
@@ -187,6 +215,17 @@ const Text = styled.span`
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 0.5rem;
+    `};
+  ${(props) =>
+    props.link &&
+    css`
+      display: block;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     `};
 `;
 
