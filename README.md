@@ -24,6 +24,7 @@ Login /Singup page
 
 Main Page
 * 카테고리별 제품보기
+* 검색기능
 
 Detail Page
 * 제품 상세보기
