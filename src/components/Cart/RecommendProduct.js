@@ -1,29 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { TbShoppingCartPlus } from 'react-icons/tb';
 import { FaRegHeart } from 'react-icons/fa';
 import { api } from '../../shared/api';
 
 const RecommendProduct = ({
-  productList,
-  setProductList,
+  recommendList,
+  setRecommendList,
   cartList,
   setCartList,
+  price,
+  setPrice,
 }) => {
   // 장바구니 추가
   const addItem = async (id) => {
     // 로그인 유무 확인
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authorization');
+
     if (token) {
       try {
-        const response = await api.post(`/auth/cart`, {
-          productId: 2,
+        const { data } = await api.post(`/auth/cart`, {
+          productId: id,
           count: 1,
         });
-        if (response.success === true) {
-          setCartList([...cartList, response.data]);
+        if (data.success) {
+          setCartList([...cartList, data.data]);
+          console.log('price', price);
+          // setPrice([...price, data.data]);
         } else {
-          alert(response.data.error.message);
+          console.log(data);
         }
       } catch (error) {
         console.log(error);
@@ -37,30 +42,32 @@ const RecommendProduct = ({
     <Container>
       <Text large>추천제품</Text>
       <Items>
-        {productList.length === 0 ? (
+        {recommendList.length === 0 ? (
           <Text medium>추천 제품이 없습니다.</Text>
         ) : (
-          productList.map((item) => (
-            <Item>
-              <img
-                src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
-                alt="제품사진"
-              />
+          recommendList.map((item) => (
+            <Item key={item.id} onClick={() => {}}>
+              <img src={item.image_url} alt="제품이미지" />
               <DescBox>
                 <TextArea>
-                  <Text bold>
-                    LINNMON 린몬 / ADILS 아딜스
-                  </Text>
+                  <Text bold>{item.name}</Text>
                   <Text>
-                    옷장+도어3, 화이트, 117x176 cm
+                    {item.description} {item.measurement}
                   </Text>
                 </TextArea>
-                <Text medium>₩ 39000</Text>
+                <Text medium>
+                  <Text>₩</Text> {item.price}
+                </Text>
                 <BtnBox>
                   <Btn>
                     <FaRegHeart />
                   </Btn>
-                  <Btn blue>
+                  <Btn
+                    blue
+                    onClick={() => {
+                      addItem(item.id);
+                    }}
+                  >
                     <TbShoppingCartPlus />
                   </Btn>
                 </BtnBox>
@@ -68,32 +75,6 @@ const RecommendProduct = ({
             </Item>
           ))
         )}
-        <Item>
-          <img
-            src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
-            alt="제품사진"
-          />
-          <DescBox>
-            <TextArea>
-              <Text bold>LINNMON 린몬 / ADILS 아딜스</Text>
-              <Text>옷장+도어3, 화이트, 117x176 cm</Text>
-            </TextArea>
-            <Text medium>₩ 39000</Text>
-            <BtnBox>
-              <Btn>
-                <FaRegHeart />
-              </Btn>
-              <Btn
-                blue
-                onClick={() => {
-                  addItem();
-                }}
-              >
-                <TbShoppingCartPlus />
-              </Btn>
-            </BtnBox>
-          </DescBox>
-        </Item>
       </Items>
     </Container>
   );
@@ -116,9 +97,11 @@ const Items = styled.div`
 `;
 
 const Item = styled.div`
+  margin-bottom: 5rem;
   img {
     width: 100%;
     max-width: 348px;
+    cursor: pointer;
   }
 `;
 
@@ -157,11 +140,17 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const Text = styled.p`
+const Text = styled.span`
   color: #111;
   font-size: 14px;
   margin-bottom: 0.5rem;
-  font-weight: ${(props) => (props.bold ? 700 : 400)};
+  font-weight: 400;
+  ${(props) =>
+    props.bold &&
+    css`
+      font-weight: 700;
+      display: block;
+    `}
   ${(props) =>
     props.underline &&
     css`
@@ -174,7 +163,7 @@ const Text = styled.p`
     css`
       font-size: 24px;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin: 0 0 0.5rem 2rem;
     `};
   ${(props) =>
     props.medium &&

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ModalWindow from './ModalWindow';
 import styled from 'styled-components';
 
-function ModalButton({ buttonName, title, content }) {
+function ModalButton({ buttonName, content }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -21,7 +21,6 @@ function ModalButton({ buttonName, title, content }) {
       <ModalWindow
         open={modalOpen}
         close={closeModal}
-        header={title}
         content={content}
       >
       </ModalWindow>
@@ -35,7 +34,6 @@ const Button = styled.button`
 
 ModalButton.propTypes = {
   buttonName: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
   content: PropTypes.element.isRequired,
 };
 
