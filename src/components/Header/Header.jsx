@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import MainModalButton from '../Modal/Main/MainModalButton';
 import SideMenu from '../Main/SideMenu';
-import { useState } from 'react';
+
 // 아이콘,이미지
 import logo from '../../images/logo.png';
 import { GoSearch } from 'react-icons/go';
@@ -13,11 +13,6 @@ import { MdStorefront } from 'react-icons/md';
 import { MdOutlinePersonOutline } from 'react-icons/md';
 
 const Header = () => {
-  const [datas, setDatas] = useState();
-
-  const handler = (e) => {
-    setDatas(e.target.value);
-  };
   const logout = () => {
     window.localStorage.removeItem('authorization');
     window.localStorage.removeItem('refresh-token');
@@ -32,7 +27,7 @@ const Header = () => {
 
         <GoSearch className="search" />
         <HeaderInput placeholder="검색어 입력"></HeaderInput>
-        {localStorage.length ? (
+        {localStorage.getItem('authorization') ? (
           <LogoutButton
             onClick={() => {
               logout();
