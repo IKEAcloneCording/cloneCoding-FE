@@ -8,15 +8,13 @@ import { api } from '../shared/api';
 import RecommendProduct from '../components/Cart/RecommendProduct';
 
 const Cart = () => {
-  const [cartList, setCartList] = useState('');
-  const [price, setPrice] = useState('');
-  const [recommendList, setRecommendList] = useState('');
+  const [cart, setCart] = useState(null);
+  const [recommendList, setRecommendList] = useState([]);
 
   // 장바구니 조회 api
-  const fetchCartList = async () => {
+  const fetchCart = async () => {
     const { data } = await api.get(`/auth/cart`);
-    setCartList(data.data.cartProducts);
-    setPrice(data.data);
+    setCart(data.data);
   };
 
   // 추천 상품 조회 (sofa로 지정)
@@ -26,32 +24,33 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    fetchCartList();
+    fetchCart();
     fetchProductList();
   }, []);
 
   return (
     <div>
       <Header />
-      <Container>
-        <CartContainer>
-          <CartItem
-            cartList={cartList}
-            setCartList={setCartList}
+      {cart && (
+        <Container>
+          <CartContainer>
+            <CartItem
+              cart={cart}
+              setCart={setCart}
+              fetchCart={fetchCart}
+            />
+            {cart.cartProducts.length && (
+              <CartPrice cart={cart} setCart={setCart} />
+            )}
+          </CartContainer>
+          <RecommendProduct
+            recommendList={recommendList}
+            cart={cart}
+            setCart={setCart}
+            fetchCart={fetchCart}
           />
-          {cartList.length === 0 ? null : (
-            <CartPrice price={price} setPrice={setPrice} />
-          )}
-        </CartContainer>
-        <RecommendProduct
-          recommendList={recommendList}
-          setRecommendList={setRecommendList}
-          cartList={cartList}
-          setCartList={setCartList}
-          price={price}
-          setPrice={setPrice}
-        />
-      </Container>
+        </Container>
+      )}
     </div>
   );
 };

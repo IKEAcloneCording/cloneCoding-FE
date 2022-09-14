@@ -8,11 +8,9 @@ import { api } from '../../shared/api';
 
 const RecommendProduct = ({
   recommendList,
-  setRecommendList,
-  cartList,
-  setCartList,
-  price,
-  setPrice,
+  cart,
+  setCart,
+  fetchCart,
 }) => {
   // 장바구니 추가
   const addItem = async (id) => {
@@ -39,9 +37,11 @@ const RecommendProduct = ({
               theme: 'dark',
             }
           );
-          setCartList([...cartList, data.data]);
-          console.log('price', price);
-          // setPrice([...price, data.data]);
+          setCart({
+            ...cart,
+            cartProducts: [...cart.cartProducts, data.data],
+          });
+          fetchCart();
         } else {
           console.log('response-error', data);
         }
