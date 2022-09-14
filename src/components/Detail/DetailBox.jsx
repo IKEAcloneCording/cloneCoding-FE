@@ -29,7 +29,7 @@ const DetailBox = () => {
 
   useEffect(() => {
     fetchCategory();
-  });
+  },[]);
   console.log(item);
   return (
     <DetailDiv>

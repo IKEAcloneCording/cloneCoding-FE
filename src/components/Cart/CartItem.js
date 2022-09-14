@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
@@ -21,7 +23,19 @@ const CartItem = ({ cartList, setCartList }) => {
         return product.cart_id !== cart_id;
       });
       if (data.success) {
-        alert('삭제되었습니다.');
+        toast(
+          `${cartList[0].product.name} 제품이 삭제되었습니다.`,
+          {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          }
+        );
         setCartList(newCartList);
       } else {
         console.log('response-error', data);
@@ -65,6 +79,7 @@ const CartItem = ({ cartList, setCartList }) => {
 
   return (
     <Container>
+      <ToastContainer />
       <TitleBox>
         {cartList.length === 0 ? (
           <Text medium>장바구니가 비어있습니다</Text>

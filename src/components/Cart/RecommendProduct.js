@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styled, { css } from 'styled-components';
 import { TbShoppingCartPlus } from 'react-icons/tb';
 import { FaRegHeart } from 'react-icons/fa';
@@ -24,11 +26,24 @@ const RecommendProduct = ({
           count: 1,
         });
         if (data.success) {
+          toast(
+            `${data.data.product.name} 제품이 장바구니에 추가되었습니다.`,
+            {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'dark',
+            }
+          );
           setCartList([...cartList, data.data]);
           console.log('price', price);
           // setPrice([...price, data.data]);
         } else {
-          console.log(data);
+          console.log('response-error', data);
         }
       } catch (error) {
         console.log(error);
@@ -40,6 +55,7 @@ const RecommendProduct = ({
 
   return (
     <Container>
+      <ToastContainer />
       <Text large>추천제품</Text>
       <Items>
         {recommendList.length === 0 ? (
