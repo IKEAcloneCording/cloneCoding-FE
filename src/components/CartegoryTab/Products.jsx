@@ -21,14 +21,16 @@ const Products = ({ category }) => {
     const { data } = await api.get(
       `/products/cat/${category}`
     );
+    // console.log(data.data.products);
+
     setProducts(data.data.products);
   };
 
   useEffect(() => {
     fetchCategory();
-  });
-
+  }, []);
   console.log(products);
+
   return (
     <ProductsBox>
       <div>
