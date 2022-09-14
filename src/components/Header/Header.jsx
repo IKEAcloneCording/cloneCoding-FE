@@ -120,7 +120,7 @@ const Header = () => {
             }}
           >
             <MdOutlinePersonOutline className="icon" />
-            로그아웃
+            로그아웃하기
           </LogoutButton>
         ) : (
           <MainModalButton
@@ -254,7 +254,7 @@ const LogoutButton = styled.button`
   font-weight: bold;
   padding: 10px 20px;
   font-size: 14px;
-  margin: 0 40px 0 90px;
+  margin: 0 40px 0 70px;
   display: flex;
   &:hover {
     background-color: #eee;
