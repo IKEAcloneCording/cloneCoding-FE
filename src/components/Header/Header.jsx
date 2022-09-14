@@ -1,34 +1,61 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link, useNavigate } from 'react-router-dom';
+import MainModalButton from '../Modal/Main/MainModalButton';
+import SideMenu from '../Main/SideMenu';
+import { useState } from 'react';
+// 아이콘,이미지
 import logo from '../../images/logo.png';
-import { Link } from 'react-router-dom';
-
-// 아이콘
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineShopping } from 'react-icons/ai';
-import { MdOutlinePersonOutline } from 'react-icons/md';
 import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
+import { MdOutlinePersonOutline } from 'react-icons/md';
 
 const Header = () => {
+  const [datas, setDatas] = useState();
+
+  const handler = (e) => {
+    setDatas(e.target.value);
+  };
+  const logout = () => {
+    window.localStorage.removeItem('authorization');
+    window.localStorage.removeItem('refresh-token');
+    window.location.reload();
+  };
   return (
     <HeaderBox>
       <HeaderBoxIn>
         <Link to="/">
           <HeaderLogo src={logo} />
         </Link>
+
         <GoSearch className="search" />
         <HeaderInput placeholder="검색어 입력"></HeaderInput>
-        <SignButton>
-          <MdOutlinePersonOutline className="icon" />
-          Hej! 로그인 또는 가입하기
-        </SignButton>
+        {localStorage.length ? (
+          <LogoutButton
+            onClick={() => {
+              logout();
+            }}
+          >
+            <MdOutlinePersonOutline className="icon" />
+            로그아웃
+          </LogoutButton>
+        ) : (
+          <MainModalButton
+            buttonName="
+           Hej! 로그인 또는 가입하기"
+            content={<SideMenu />}
+          ></MainModalButton>
+        )}
+
         <Link to="/cart">
           <ShoppingCart>
             <AiOutlineShopping className="icon" />
           </ShoppingCart>
         </Link>
       </HeaderBoxIn>
+
       <HeaderMenu>
         <Ul>
           <Li>모든 제품</Li>
@@ -50,6 +77,7 @@ const Header = () => {
     </HeaderBox>
   );
 };
+
 const HeaderBox = styled.div`
   max-width: 95rem;
   margin: 0 auto;
@@ -92,19 +120,6 @@ const HeaderInput = styled.input`
   background-color: #eee;
 `;
 
-const SignButton = styled.button`
-  height: 40px;
-  border-radius: 40px;
-  font-weight: bold;
-  padding: 10px 20px;
-  font-size: 14px;
-  margin: 0 10px 0 40px;
-  display: flex;
-  &:hover {
-    background-color: #eee;
-  }
-`;
-
 const ShoppingCart = styled.button`
   border-radius: 100%;
   padding: 8px;
@@ -143,5 +158,20 @@ const Li = styled.li`
     margin-right: 0px;
   }
 `;
-
+const LogoutButton = styled.button`
+  height: 40px;
+  border-radius: 40px;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin: 0 40px 0 60px;
+  display: flex;
+  &:hover {
+    background-color: #eee;
+  }
+  .icon {
+    font-size: 22px;
+    margin-right: 8px;
+  }
+`;
 export default Header;
