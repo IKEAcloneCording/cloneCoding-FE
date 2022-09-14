@@ -12,8 +12,6 @@ export const __login = createAsyncThunk(
     // 토큰 localstorge 저장하기
     localStorage.setItem("authorization", response.headers.authorization);
     localStorage.setItem("refresh-token", response.headers["refresh-token"]);
-
-    console.log(response.headers)
     
     return response.data;
   }

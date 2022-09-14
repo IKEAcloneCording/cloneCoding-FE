@@ -1,24 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
-import sofa from '../../images/sofa.png';
 import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
+import { useLocation } from 'react-router-dom';
+import { api } from '../../shared/api';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const DetailBox = () => {
+  const [item, setItem] = useState([
+    {
+      id: '',
+      name: '',
+      description: '',
+      price: '',
+      image_url: '',
+      subImage_url: '',
+    },
+  ]);
+
+  const location = useLocation();
+  const id = location.state.id;
+
+  const fetchCategory = async () => {
+    const { data } = await api.get(`/p/${id}`);
+    setItem(data.data);
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  });
+  console.log(item);
   return (
     <DetailDiv>
       <DetailImg>
-        <img src={sofa} />
-        <img src={sofa} />
-        <img src={sofa} />
-        <img src={sofa} />
+        <img src={`${item.image_url}`} />
+        <img src={`${item.subImage_url}`} />
       </DetailImg>
       <DetailInfo>
         <ProductTitle>
-          ANGERSBY 앙에르스뷔<span>￦229,000</span>
+          {item.name}
+          <span>￦ {item.price}</span>
         </ProductTitle>
         <ProductSubtitle>
-          2인용소파, 크니사 라이트그레이
+          {item.description}
         </ProductSubtitle>
 
         <InfoIn>
