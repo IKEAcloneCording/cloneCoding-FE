@@ -6,20 +6,25 @@ import { FiUser } from 'react-icons/fi';
 import { api } from '../../shared/api';
 
 const CartItem = ({ cartList, setCartList }) => {
+  // 로그인 유무 확인
+  const token = localStorage.getItem('authorization');
+
   const [quantity, setQuantity] = useState('');
 
   // 장바구니 품목 삭제
-  const deleteHandler = async (id) => {
+  const deleteHandler = async (cart_id) => {
     try {
-      const response = await api.delete(`/auth/cart/${id}`);
+      const { data } = await api.delete(
+        `/auth/cart/${cart_id}`
+      );
       const newCartList = cartList.filter((product) => {
-        return product.id !== id;
+        return product.cart_id !== cart_id;
       });
-      if (response.success === true) {
+      if (data.success) {
         alert('삭제되었습니다.');
         setCartList(newCartList);
       } else {
-        alert(response.data.error.message);
+        console.log('response-error', data);
       }
     } catch (error) {
       console.log(error);
@@ -72,32 +77,34 @@ const CartItem = ({ cartList, setCartList }) => {
       </TitleBox>
       <DescContainer>
         {cartList.length === 0 ? (
-          <SignInBox>
-            <FlexRowBox>
-              <FlexColBox>
-                <Text bold>로그인</Text>
-                <FlexRowBox>
-                  <Text underline>
-                    <Link to="/signin">
-                      로그인 또는 회원가입
-                    </Link>
-                  </Text>
-                  <Text>
-                    하면 더 편리하게 이용하실수 있어요.
-                  </Text>
-                </FlexRowBox>
-              </FlexColBox>
-              <H1>
-                <FiUser />
-              </H1>
-            </FlexRowBox>
-          </SignInBox>
+          token ? null : (
+            <SignInBox>
+              <FlexRowBox>
+                <FlexColBox>
+                  <Text bold>로그인</Text>
+                  <FlexRowBox>
+                    <Text underline>
+                      <Link to="/signin">
+                        로그인 또는 회원가입
+                      </Link>
+                    </Text>
+                    <Text>
+                      하면 더 편리하게 이용하실수 있어요.
+                    </Text>
+                  </FlexRowBox>
+                </FlexColBox>
+                <H1>
+                  <FiUser />
+                </H1>
+              </FlexRowBox>
+            </SignInBox>
+          )
         ) : (
           cartList.map((item) => (
-            <ContentBox key={item.product.id}>
+            <ContentBox key={item.cart_id}>
               <ProducImg
-                src="https://www.ikea.com/kr/ko/images/products/kleppstad-wardrobe-with-3-doors-white__0753594_pe748782_s3.jpg"
-                alt="이미지"
+                src={item.product.imageUrl}
+                alt="제품 썸네일 이미지"
               />
               <FlexRowBox>
                 <FlexColBox>
@@ -107,8 +114,8 @@ const CartItem = ({ cartList, setCartList }) => {
                         {item.product.name}
                       </Link>
                     </Text>
-                    <Text>옷장+도어3, 화이트</Text>
-                    <Text>117x176 cm</Text>
+                    <Text>{item.product.description}</Text>
+                    <Text>{item.product.measurement}</Text>
                   </DescBox>
                   <FlexRowBox>
                     <BtnBox>
@@ -133,7 +140,7 @@ const CartItem = ({ cartList, setCartList }) => {
                     </BtnBox>
                     <DelBtn
                       onClick={() => {
-                        deleteHandler(item.product.id);
+                        deleteHandler(item.cart_id);
                       }}
                     >
                       삭제
@@ -167,6 +174,7 @@ const DescButton = styled.button`
 `;
 
 const ProducImg = styled.img`
+  margin-right: 1rem;
   width: 140px;
   height: 140px;
 `;
@@ -199,7 +207,7 @@ const ContentBox = styled.div`
   padding: 2.5rem 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 140px auto;
+  grid-template-columns: 160px auto;
   width: 100%;
   border-bottom: 1px solid #dfdfdf;
 `;

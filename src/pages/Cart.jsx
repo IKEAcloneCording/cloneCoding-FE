@@ -5,25 +5,24 @@ import Container from '../components/Layout/Container';
 import Header from '../components/Header/Header';
 import CartPrice from '../components/Cart/CartPrice';
 import { api } from '../shared/api';
-import axios from 'axios';
 import RecommendProduct from '../components/Cart/RecommendProduct';
 
 const Cart = () => {
   const [cartList, setCartList] = useState('');
-  const [productList, setProductList] = useState('');
+  const [price, setPrice] = useState('');
+  const [recommendList, setRecommendList] = useState('');
 
   // 장바구니 조회 api
   const fetchCartList = async () => {
-    const { data } = await axios.get(
-      `http://localhost:3001/cart`
-    );
-    setCartList(data);
+    const { data } = await api.get(`/auth/cart`);
+    setCartList(data.data.cartProducts);
+    setPrice(data.data);
   };
 
-  // 상품 조회
+  // 추천 상품 조회 (sofa로 지정)
   const fetchProductList = async () => {
-    const { data } = await api.get(`/products`);
-    setProductList(data.data);
+    const { data } = await api.get(`/products/cat/sofa`);
+    setRecommendList(data.data.products);
   };
 
   useEffect(() => {
@@ -40,13 +39,17 @@ const Cart = () => {
             cartList={cartList}
             setCartList={setCartList}
           />
-          {cartList.length === 0 ? null : <CartPrice />}
+          {cartList.length === 0 ? null : (
+            <CartPrice price={price} setPrice={setPrice} />
+          )}
         </CartContainer>
         <RecommendProduct
-          productList={productList}
-          setProductList={setProductList}
+          recommendList={recommendList}
+          setRecommendList={setRecommendList}
           cartList={cartList}
           setCartList={setCartList}
+          price={price}
+          setPrice={setPrice}
         />
       </Container>
     </div>

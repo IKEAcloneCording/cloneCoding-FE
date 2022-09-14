@@ -9,9 +9,8 @@ import RefundModal from './RefundModal';
 import SSLModal from './SSLModal';
 import ModalButton from '../Modal/ModalButton';
 
-const CartPrice = () => {
-  const [totalPrice, setTotalPrice] = useState('');
-  const [deliveryFee, setDeliveryFee] = useState('');
+const CartPrice = ({ price, setPrice }) => {
+  const token = localStorage.getItem('authorization');
 
   const paymentHandler = () => {
     alert('결제하기 서비스는 준비중입니다.');
@@ -24,41 +23,51 @@ const CartPrice = () => {
           <Text bold>주문내역</Text>
         </FlexRowBox>
         <FlexRowBox mb>
+          <Text>제품금액</Text>
+          <Text>
+            {price
+              ? price.total_order_price
+              : `아직 배송비가 산정되지 않았습니다`}
+          </Text>
+        </FlexRowBox>
+        <FlexRowBox mb>
           <Text>전체배송비</Text>
           <Text>
-            {deliveryFee
-              ? { deliveryFee }
+            {price
+              ? price.total_delivery_fee
               : `아직 배송비가 산정되지 않았습니다`}
           </Text>
         </FlexRowBox>
         <Hr></Hr>
         <FlexRowBox>
-          <Text bold>총 주문 금액</Text>
+          <Text bold>총 주문금액</Text>
           <LargeText>
-            ₩ {totalPrice ? { totalPrice } : `0`}
+            ₩ {price ? price.total_order_and_delivery_price : `0`}
           </LargeText>
         </FlexRowBox>
       </PriceContainer>
-      <SignInBox>
-        <FlexRowBox>
-          <FlexColBox>
-            <Text bold>로그인</Text>
-            <FlexRowBox>
-              <Text underline>
-                <Link to="/signin">
-                  로그인 또는 회원가입
-                </Link>
-              </Text>
-              <Text>
-                하면 더 편리하게 이용하실수 있어요.
-              </Text>
-            </FlexRowBox>
-          </FlexColBox>
-          <H1>
-            <FiUser />
-          </H1>
-        </FlexRowBox>
-      </SignInBox>
+      {!token && (
+        <SignInBox>
+          <FlexRowBox>
+            <FlexColBox>
+              <Text bold>로그인</Text>
+              <FlexRowBox>
+                <Text underline>
+                  <Link to="/signin">
+                    로그인 또는 회원가입
+                  </Link>
+                </Text>
+                <Text>
+                  하면 더 편리하게 이용하실수 있어요.
+                </Text>
+              </FlexRowBox>
+            </FlexColBox>
+            <H1>
+              <FiUser />
+            </H1>
+          </FlexRowBox>
+        </SignInBox>
+      )}
       <PayBtn onClick={paymentHandler}>
         <Text bold>결제하기</Text>
         <H1>
@@ -107,7 +116,7 @@ const Hr = styled.hr`
 
 const FlexRowBox = styled.div`
   display: flex;
-  margin-bottom: ${(props) => (props.mb ? '1.25rem' : 0)};
+  margin-bottom: ${(props) => (props.mb ? '1rem' : 0)};
   justify-content: space-between;
   ${(props) =>
     props.start &&
