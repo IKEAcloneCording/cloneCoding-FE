@@ -1,14 +1,29 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { FiUser } from 'react-icons/fi';
 import { api } from '../../shared/api';
 
-const CartItem = ({ cartList, setCartList }) => {
+const CartItem = ({ cart, setCart, fetchCart }) => {
+  const navigate = useNavigate();
+
+  // 디테일 페이지로 이동
+  const goToDetail = (id) => {
+    navigate(`/detail/${id}`, {
+      state: {
+        id: id,
+      },
+    });
+  };
+
   // 로그인 유무 확인
   const token = localStorage.getItem('authorization');
-
+  const quantityArr = Array(10)
+    .fill()
+    .map((_, i) => i + 1);
   const [quantity, setQuantity] = useState('');
 
   // 장바구니 품목 삭제
@@ -17,12 +32,30 @@ const CartItem = ({ cartList, setCartList }) => {
       const { data } = await api.delete(
         `/auth/cart/${cart_id}`
       );
-      const newCartList = cartList.filter((product) => {
-        return product.cart_id !== cart_id;
-      });
+      const newCartList = cart.cartProducts.filter(
+        (product) => {
+          return product.cart_id !== cart_id;
+        }
+      );
       if (data.success) {
-        alert('삭제되었습니다.');
-        setCartList(newCartList);
+        toast(
+          `${cart.cartProducts[0].product.name} 제품이 삭제되었습니다.`,
+          {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          }
+        );
+        setCart({
+          ...cart,
+          cartProducts: newCartList,
+        });
+        fetchCart();
       } else {
         console.log('response-error', data);
       }
@@ -31,129 +64,158 @@ const CartItem = ({ cartList, setCartList }) => {
     }
   };
 
-  // 장바구니 수량 조절
-  const editHandler = async (id) => {
+  // 장바구니 수량 수정
+  const editHandler = async (cart_id) => {
     try {
-      const response = await api.put(
-        `/auth/cart/${id}/chage-count`,
+      const { data } = await api.put(
+        `/auth/cart/${cart_id}/change-count`,
         {
           count: quantity,
         }
       );
-      if (response.success === false) {
-        alert(response.data.error.message);
-      } else {
-        setCartList.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                count: quantity,
-              }
-            : item
+      if (data.success) {
+        toast(
+          `${data.data.product.name} 제품의 수량이 변경되었습니다.`,
+          {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          }
         );
+        fetchCart();
+        setQuantity(data.data.count);
+      } else {
+        console.log('response-error', data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const handleSelected = (e) => {
-  //   console.log('e.target.value', e.target.value);
-  //   setQuantity({ ...quantity, count: e.target.value });
-  //   console.log('quantity', quantity);
-  // };
+  const handleSelected = (e) => {
+    setQuantity(e.target.value);
+  };
 
   return (
-    <Container>
-      <TitleBox>
-        {cartList.length === 0 ? (
-          <Text medium>장바구니가 비어있습니다</Text>
-        ) : (
-          <H1>장바구니</H1>
-        )}
-        <DescButton>
-          <BiDotsHorizontalRounded />
-        </DescButton>
-      </TitleBox>
-      <DescContainer>
-        {cartList.length === 0 ? (
-          token ? null : (
-            <SignInBox>
-              <FlexRowBox>
-                <FlexColBox>
-                  <Text bold>로그인</Text>
+    cart && (
+      <Container>
+        <ToastContainer />
+        <TitleBox>
+          {cart.cartProducts.length > 0 ? (
+            <H1>장바구니</H1>
+          ) : (
+            <Text medium>장바구니가 비어있습니다</Text>
+          )}
+          <DescButton>
+            <BiDotsHorizontalRounded />
+          </DescButton>
+        </TitleBox>
+        <DescContainer>
+          {cart.cartProducts.length === 0
+            ? !token && (
+                <SignInBox>
                   <FlexRowBox>
-                    <Text underline>
-                      <Link to="/signin">
-                        로그인 또는 회원가입
-                      </Link>
-                    </Text>
-                    <Text>
-                      하면 더 편리하게 이용하실수 있어요.
-                    </Text>
+                    <FlexColBox>
+                      <Text bold>로그인</Text>
+                      <FlexRowBox>
+                        <Text underline>
+                          <Link to="/signin">
+                            로그인 또는 회원가입
+                          </Link>
+                        </Text>
+                        <Text>
+                          하면 더 편리하게 이용하실수
+                          있어요.
+                        </Text>
+                      </FlexRowBox>
+                    </FlexColBox>
+                    <H1>
+                      <FiUser />
+                    </H1>
                   </FlexRowBox>
-                </FlexColBox>
-                <H1>
-                  <FiUser />
-                </H1>
-              </FlexRowBox>
-            </SignInBox>
-          )
-        ) : (
-          cartList.map((item) => (
-            <ContentBox key={item.cart_id}>
-              <ProducImg
-                src={item.product.imageUrl}
-                alt="제품 썸네일 이미지"
-              />
-              <FlexRowBox>
-                <FlexColBox>
-                  <DescBox>
-                    <Text bold>
-                      <Link to="/">
-                        {item.product.name}
-                      </Link>
-                    </Text>
-                    <Text>{item.product.description}</Text>
-                    <Text>{item.product.measurement}</Text>
-                  </DescBox>
+                </SignInBox>
+              )
+            : cart.cartProducts.map((item) => (
+                <ContentBox key={item.product.id}>
+                  <ProducImg
+                    src={item.product.imageUrl}
+                    alt="제품 썸네일 이미지"
+                  />
                   <FlexRowBox>
-                    <BtnBox>
-                      <QuantityBtn>
-                        <select
-                          name="quantity"
-                          id="selectQuantity"
-                          onChange={editHandler}
+                    <FlexColBox>
+                      <DescBox>
+                        <Text
+                          bold
+                          onClick={() => {
+                            goToDetail(item.product.id);
+                          }}
                         >
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                        </select>
-                      </QuantityBtn>
-                    </BtnBox>
-                    <DelBtn
-                      onClick={() => {
-                        deleteHandler(item.cart_id);
-                      }}
-                    >
-                      삭제
-                    </DelBtn>
+                          {item.product.name}
+                        </Text>
+                        <Text>
+                          {item.product.description}
+                        </Text>
+                        <Text>
+                          {item.product.measurement}
+                        </Text>
+                      </DescBox>
+                      <FlexRowBox>
+                        <BtnBox>
+                          <QuantityBtn>
+                            <select
+                              name="quantity"
+                              id="selectQuantity"
+                              onChange={handleSelected}
+                            >
+                              {quantityArr.map(
+                                (quantityItem) => {
+                                  return (
+                                    <option
+                                      value={quantityItem}
+                                      selected={
+                                        quantityItem ===
+                                        item.count
+                                      }
+                                    >
+                                      {quantityItem}
+                                    </option>
+                                  );
+                                }
+                              )}
+                            </select>
+                          </QuantityBtn>
+                        </BtnBox>
+                        <DelBtn
+                          onClick={() => {
+                            editHandler(item.cart_id);
+                          }}
+                        >
+                          수정
+                        </DelBtn>
+                        <DelBtn
+                          onClick={() => {
+                            deleteHandler(item.cart_id);
+                          }}
+                        >
+                          삭제
+                        </DelBtn>
+                      </FlexRowBox>
+                    </FlexColBox>
+                    <FlexColBox end>
+                      <Text small>개당 금액</Text>
+                      <Text bold>₩ {item.product.price}</Text>
+                    </FlexColBox>
                   </FlexRowBox>
-                </FlexColBox>
-                <Text bold>₩ {item.product.price}</Text>
-              </FlexRowBox>
-            </ContentBox>
-          ))
-        )}
-      </DescContainer>
-    </Container>
+                </ContentBox>
+              ))}
+        </DescContainer>
+      </Container>
+    )
   );
 };
 
@@ -195,7 +257,7 @@ const FlexRowBox = styled.div`
 const FlexColBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: ${(props) => (props.end ? 'flex-end' : "flex-start")};
 `;
 
 const DescBox = styled.div`
@@ -275,6 +337,11 @@ const Text = styled.span`
       font-size: 24px;
       font-weight: 700;
       margin: 1.25rem;
+    `};
+    ${(props) =>
+    props.small &&
+    css`
+      font-size: 12px;
     `};
 `;
 
