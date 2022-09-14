@@ -46,6 +46,8 @@ const Category = () => {
   return (
     <CategoryBox>
       <div>카테고리별 제품 찾기</div>
+
+      {/* 카테고리 탭 */}
       <ul className="tabs">
         {catData.map((item) => (
           <li
@@ -58,6 +60,7 @@ const Category = () => {
         ))}
       </ul>
 
+      {/*선택한 카테고리 넘겨주기*/}
       {catData
         .filter((item) => index === item.id)
         .map((item) => (
@@ -80,7 +83,7 @@ const CategoryBox = styled.div`
   ul {
     display: flex;
     padding-bottom: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 70px;
     border-bottom: 1px solid #eee;
   }
   li {
@@ -97,6 +100,8 @@ const CategoryBox = styled.div`
   .active {
     /* box-shadow: 0 0 0 1.5px #777 inset; */
     background-color: #bbb;
+    /* background-color: #777;
+    color: #fff; */
   }
 `;
 

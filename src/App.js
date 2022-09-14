@@ -9,6 +9,7 @@ import SignIn from './pages/SignIn';
 import Cart from './pages/Cart';
 import Main from './pages/Main';
 import Detail from './pages/Detail';
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/search/:search" element={<Search />} />
       </Routes>
       </BrowserRouter>
   );

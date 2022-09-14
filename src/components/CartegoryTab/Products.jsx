@@ -1,6 +1,6 @@
 import React from 'react';
 import { api } from '../../shared/api';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useState } from 'react';
 import Product from './Product';
 import styled from 'styled-components';
@@ -17,19 +17,17 @@ const Products = ({ category }) => {
     },
   ]);
 
+  // 해당 카테고리 제품 가져오기
   const fetchCategory = async () => {
     const { data } = await api.get(
       `/products/cat/${category}`
     );
-    // console.log(data.data.products);
-
     setProducts(data.data.products);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchCategory();
-  }, []);
-  console.log(products);
+  }, [category]);
 
   return (
     <ProductsBox>

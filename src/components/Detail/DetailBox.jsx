@@ -4,7 +4,7 @@ import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
 import { useLocation } from 'react-router-dom';
 import { api } from '../../shared/api';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useState } from 'react';
 
 const DetailBox = () => {
@@ -19,18 +19,20 @@ const DetailBox = () => {
     },
   ]);
 
+  // 클릭한 제품 id 받아오기
   const location = useLocation();
   const id = location.state.id;
 
-  const fetchCategory = async () => {
+  // 제품 상세 가져오기
+  const fetchItem = async () => {
     const { data } = await api.get(`/p/${id}`);
     setItem(data.data);
   };
 
-  useEffect(() => {
-    fetchCategory();
-  });
-  console.log(item);
+  useLayoutEffect(() => {
+    fetchItem();
+  }, [id]);
+
   return (
     <DetailDiv>
       <DetailImg>
@@ -40,8 +42,12 @@ const DetailBox = () => {
       <DetailInfo>
         <ProductTitle>
           {item.name}
-          <span>￦ {item.price}</span>
+          <span>
+            <span>￦</span>
+            {item.price}
+          </span>
         </ProductTitle>
+
         <ProductSubtitle>
           {item.description}
         </ProductSubtitle>
@@ -119,6 +125,11 @@ const ProductTitle = styled.div`
   font-weight: bold;
   span {
     float: right;
+    span {
+      font-size: 15px;
+      float: left;
+      margin-right: 5px;
+    }
   }
 `;
 const ProductSubtitle = styled.div`
