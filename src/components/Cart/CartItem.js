@@ -45,37 +45,54 @@ const CartItem = ({ cartList, setCartList }) => {
     }
   };
 
-  // 장바구니 수량 조절
-  const editHandler = async (id) => {
+  // 장바구니 수량 수정
+  const editHandler = async (cart_id) => {
     try {
-      const response = await api.put(
-        `/auth/cart/${id}/chage-count`,
+      const { data } = await api.put(
+        `/auth/cart/${cart_id}/change-count`,
         {
           count: quantity,
         }
       );
-      if (response.success === false) {
-        alert(response.data.error.message);
-      } else {
-        setCartList.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                count: quantity,
-              }
-            : item
+      if (data.success) {
+        toast(
+          `${data.data.product.name} 제품의 수량이 변경되었습니다.`,
+          {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          }
         );
+        setQuantity(data.data.count);
+        console.log('quantity', quantity);
+      } else {
+        console.log('response-error', data);
       }
+      // if (data.success === false) {
+      //   alert('response-error', data);
+      // } else {
+      //   setCartList.map((item) =>
+      //     item.cart_id === cart_id
+      //       ? {
+      //           ...item,
+      //           count: quantity,
+      //         }
+      //       : item
+      //   );
+      // }
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const handleSelected = (e) => {
-  //   console.log('e.target.value', e.target.value);
-  //   setQuantity({ ...quantity, count: e.target.value });
-  //   console.log('quantity', quantity);
-  // };
+  const handleSelected = (e) => {
+    setQuantity(e.target.value);
+  };
 
   return (
     <Container>
@@ -138,27 +155,48 @@ const CartItem = ({ cartList, setCartList }) => {
                         <select
                           name="quantity"
                           id="selectQuantity"
-                          onChange={editHandler}
+                          onChange={handleSelected}
                         >
-                          <option value="1">1</option>
+                          {[
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                          ].map((i) => {
+                            return (
+                              <option
+                                value={i}
+                                selected={i === item.count}
+                              >
+                                {i}
+                              </option>
+                            );
+                          })}
+                          {/* <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
-                          <option value="4">4</option>
+                          <option value="4" selected>
+                            4
+                          </option>
                           <option value="5">5</option>
                           <option value="6">6</option>
                           <option value="7">7</option>
                           <option value="8">8</option>
                           <option value="9">9</option>
-                          <option value="10">10</option>
+                          <option value="10">10</option> */}
                         </select>
                       </QuantityBtn>
                     </BtnBox>
                     <DelBtn
                       onClick={() => {
+                        editHandler(item.cart_id);
+                      }}
+                    >
+                      수정
+                    </DelBtn>
+                    <DelBtn
+                      onClick={() => {
                         deleteHandler(item.cart_id);
                       }}
                     >
-                      삭제
+                      삭제 {item.count}
                     </DelBtn>
                   </FlexRowBox>
                 </FlexColBox>
