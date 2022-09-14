@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../../shared/api';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DetailBox = () => {
   const [item, setItem] = useState([
@@ -19,6 +21,47 @@ const DetailBox = () => {
     },
   ]);
 
+  const navigate = useNavigate();
+
+  // 장바구니 추가
+  const addItem = async (id) => {
+    // 로그인 유무 확인
+    const token = localStorage.getItem('authorization');
+
+    if (token) {
+      try {
+        const { data } = await api.post(`/auth/cart`, {
+          productId: id,
+          count: 1,
+        });
+        if (data.success) {
+          toast(
+            `${data.data.product.name} 제품이 장바구니에 추가되었습니다. 장바구니로 이동합니다.`,
+            {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'dark',
+            }
+          );
+          setTimeout(() => {
+            navigate('/cart');
+          }, 3000);
+        } else {
+          console.log('response-error', data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      localStorage.setItem('cart', `productId : 테스트`);
+    }
+  };
+
   const location = useLocation();
   const id = location.state.id;
 
@@ -29,10 +72,11 @@ const DetailBox = () => {
 
   useEffect(() => {
     fetchCategory();
-  },[]);
+  }, []);
   console.log(item);
   return (
     <DetailDiv>
+      <ToastContainer />
       <DetailImg>
         <img src={`${item.image_url}`} />
         <img src={`${item.subImage_url}`} />
@@ -62,7 +106,13 @@ const DetailBox = () => {
             <p>매장 재고 및 재입고 날짜 확인</p>
           </InfoInBox>
         </InfoIn>
-        <button>구매하기</button>
+        <button
+          onClick={() => {
+            addItem(item.id);
+          }}
+        >
+          구매하기
+        </button>
       </DetailInfo>
     </DetailDiv>
   );
