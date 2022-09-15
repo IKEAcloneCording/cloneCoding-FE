@@ -56,21 +56,18 @@ const SignUpForm = () => {
       return;
     }
     try {
-      const response = await api.post(`/signup`, {
+      await api.post(`/signup`, {
         email,
         password,
         name,
         phone_number,
         address,
       });
-      if (response.success === true) {
-        alert('회원가입이 완료되었습니다.');
-        navigate('/signin');
-      } else {
-        alert(response.data.error.message);
-      }
+      alert('회원가입이 완료되었습니다.');
+      navigate('/signin');
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.error.message);
+      // alert(error.response.data.error.message);
     }
   };
 
@@ -108,6 +105,7 @@ const SignUpForm = () => {
           type="text"
           onChange={handleInput}
           dafaultValue={name}
+          placeholder="이케아"
         />
         <Label htmlFor="phone_number">휴대폰</Label>
         <Input
@@ -115,6 +113,7 @@ const SignUpForm = () => {
           type="tel"
           onChange={handleInput}
           defaultValue={phone_number}
+          placeholder="010-1234-5678"
         />
         <Label htmlFor="address">주소</Label>
         <Input
@@ -123,6 +122,7 @@ const SignUpForm = () => {
           onChange={handleInput}
           value={kakaoaddress}
           onClick={handleClick}
+          readOnly
         />
         <AddressBtn type="button" onClick={handleClick}>
           주소 찾기
@@ -133,6 +133,7 @@ const SignUpForm = () => {
           type="email"
           onChange={handleInput}
           defaultValue={email}
+          placeholder="abc@eamail.com"
         />
         <Label htmlFor="password">비밀번호</Label>
         <Input
@@ -140,6 +141,7 @@ const SignUpForm = () => {
           type="password"
           onChange={handleInput}
           defaultValue={password}
+          placeholder="8자 이상, 대문자, 숫자, 특수문자 포함"
         />
         <SubmitBtn onClick={handleButtonValid}>
           가입 완료하기

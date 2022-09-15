@@ -85,9 +85,7 @@ const RecommendProduct = ({
               }}
             >
               <img
-                src={
-                  over ? item.subImage_url : item.image_url
-                }
+                src={item.image_url}
                 alt="제품이미지"
                 onClick={() => {
                   goToDetail(item.id);
