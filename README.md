@@ -31,6 +31,3 @@ Detail Page
 * 장바구니 추가
 
 
-## Trouble Shooting
-* useEffect 무한 렌더링 - useEffect deps[]를 넣지 않아서 무한 렌더링이 생겼는데, 빈 []를 넣었더니 function 기능이 되지않았다. 그래서 []안에 변경되는 값을 넣어 값이 변경될 때만 렌더링하게 하였다.   
-* 카테고리 탭 누를시에 깜빡거리면서 제품 변경됨 - useEffect 대신에 useLayoutEffect 사용
