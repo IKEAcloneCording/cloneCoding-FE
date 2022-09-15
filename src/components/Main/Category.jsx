@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import Products from '../CartegoryTab/Products';
 import { useNavigate } from 'react-router-dom';
 
 const Category = () => {

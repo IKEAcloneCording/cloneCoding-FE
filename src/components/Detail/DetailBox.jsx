@@ -228,7 +228,6 @@ const InfoInBox = styled.div`
   }
   p {
     color: #555;
-    /* font-weight: normal; */
     text-decoration: underline;
     margin-left: 36px;
     margin-bottom: 20px;
