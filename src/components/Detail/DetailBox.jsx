@@ -106,11 +106,8 @@ const DetailBox = () => {
     <DetailDiv>
       <ToastContainer />
       <DetailImg>
-        <img src={`${item.image_url}`} alt="메인이미지" />
-        <img
-          src={`${item.subImage_url}`}
-          alt="서브이미지"
-        />
+        <img src={`${item.image_url}`} alt="img" />
+        <img src={`${item.subImage_url}`} alt="img" />
       </DetailImg>
       <DetailInfo>
         <ProductTitle>
