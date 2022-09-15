@@ -41,13 +41,12 @@ const Header = () => {
       state: {
         result: result,
         search: search,
-        // all: all,
       },
     });
 
     setSearch('');
   };
-  //-------------------------
+
   //검색결과
   const [result, setResult] = useState([
     {
@@ -70,31 +69,6 @@ const Header = () => {
   useLayoutEffect(() => {
     fetchSearchItem();
   }, [search]);
-  //--------------------------
-  // const [all, setAll] = useState([
-  //   {
-  //     id: '',
-  //     name: '',
-  //     description: '',
-  //     price: '',
-  //   },
-  // ]);
-
-  // const fetchSearchItem = async () => {
-  //   const { data } = await api.get(`products`);
-  //   setAll(data);
-  // };
-
-  // useLayoutEffect(() => {
-  //   fetchSearchItem();
-  // }, [search]);
-  // console.log(all);
-  // const filter = all.filter((p) => {
-  //   return p
-  //     .replace(' ', '')
-  //     .toLocaleLowerCase()
-  //     .includes(search.toLocaleLowerCase());
-  // })
 
   return (
     <HeaderBox>
