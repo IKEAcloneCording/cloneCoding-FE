@@ -53,11 +53,6 @@ const Category = () => {
 
   const navigate = useNavigate();
 
-  // // 클릭한 제품 아이디 상세페이지로 보내기
-  // const onClickCategory = (item) => {
-  //   setIndex(item.id);
-  // };
-
   return (
     <CategoryBox>
       <div>카테고리별 제품 찾기</div>
@@ -67,11 +62,9 @@ const Category = () => {
           <CategoryBg
             img={item.img}
             key={item.id}
-            // className={index === item.id ? 'active' : null}
             onClick={() => {
               setIndex(item.id);
             }}
-            // onClick={onClickCategory(item)}
           >
             <CategoryButton>{item.title}</CategoryButton>
           </CategoryBg>
