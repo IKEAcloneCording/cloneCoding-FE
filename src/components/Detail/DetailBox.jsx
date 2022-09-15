@@ -80,8 +80,8 @@ const DetailBox = () => {
     <DetailDiv>
       <ToastContainer />
       <DetailImg>
-        <img src={`${item.image_url}`} />
-        <img src={`${item.subImage_url}`} />
+        <img src={`${item.image_url}`} alt="img" />
+        <img src={`${item.subImage_url}`} alt="img" />
       </DetailImg>
       <DetailInfo>
         <ProductTitle>

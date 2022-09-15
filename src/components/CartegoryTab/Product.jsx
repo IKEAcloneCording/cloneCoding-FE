@@ -21,7 +21,7 @@ const Product = ({ item }) => {
       }}
     >
       <ItemBox>
-        <img src={`${item.image_url}`} />
+        <img src={`${item.image_url}`} alt="img" />
         <div>
           <ItemName>{item.name}</ItemName>
           <ItemDesc>{item.description}</ItemDesc>
