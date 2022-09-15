@@ -3,7 +3,7 @@
 
 ## 프로젝트 주소
 * SA : https://www.notion.so/7-IKEA-081fb84cc30747b981c8720a035b48fb
-* 시연 영상 : 
+* 시연 영상 : https://www.youtube.com/watch?v=VYtehjDeuXM
 * 주소 : http://ikea-clonecoding.s3-website.ap-northeast-2.amazonaws.com/
 
 
