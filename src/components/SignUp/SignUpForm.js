@@ -141,7 +141,7 @@ const SignUpForm = () => {
           type="password"
           onChange={handleInput}
           defaultValue={password}
-          placeholder="8자 이상, 대문자, 숫자, 특수문자 포함"
+          placeholder="8자 이상, 대문자, 숫자, 특수문자 1개 이상 포함"
         />
         <SubmitBtn onClick={handleButtonValid}>
           가입 완료하기

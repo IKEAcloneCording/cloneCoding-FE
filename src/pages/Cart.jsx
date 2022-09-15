@@ -61,6 +61,9 @@ const Cart = () => {
         )
       ) : (
         <Container>
+          <CartContainer>
+            <GuestCartItem />
+          </CartContainer>
           <GuestRecommendProduct
             recommendList={recommendList}
           />

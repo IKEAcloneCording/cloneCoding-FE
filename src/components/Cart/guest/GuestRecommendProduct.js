@@ -22,8 +22,6 @@ const RecommendProduct = ({ recommendList }) => {
   };
 
   const addLocalStorage = (item) => {
-    console.log('item', [item]);
-    console.log('getItem', getItem, typeof getItem);
     const parseItem = JSON.parse(getItem).push([item]);
     const toString = JSON.stringify(parseItem);
     localStorage.setItem('guest-cart', toString);
@@ -31,7 +29,6 @@ const RecommendProduct = ({ recommendList }) => {
 
   // 장바구니 추가
   const addItem = async (item) => {
-    // const parseProduct = JSON.parse(getItem);
     toast(
       `${item.name} 제품이 장바구니에 추가되었습니다.`,
       {
@@ -50,10 +47,10 @@ const RecommendProduct = ({ recommendList }) => {
       : localStorage.setItem(
           'guest-cart',
           `[{ 
-            id: ${item.id}, 
-            name: ${item.name}, 
-            image_url: ${item.image_url}, 
-            price: ${item.price}
+            id: "${item.id}", 
+            name: "${item.name}", 
+            image_url: "${item.image_url}", 
+            price: "${item.price}"
           }]`
         );
   };
