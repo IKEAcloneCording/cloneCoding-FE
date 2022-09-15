@@ -10,6 +10,7 @@ import Cart from './pages/Cart';
 import Main from './pages/Main';
 import Detail from './pages/Detail';
 import Search from './pages/Search';
+import List from './pages/List';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/search/:search" element={<Search />} />
+        <Route path="/list/:category" element={<List />} />
       </Routes>
       </BrowserRouter>
   );
