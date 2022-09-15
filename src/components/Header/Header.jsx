@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import MainModalButton from '../Modal/Main/MainModalButton';
 import SideMenu from '../Main/SideMenu';
+import { api } from '../../shared/api';
+import { useLayoutEffect } from 'react';
+import { useState } from 'react';
 
 // 아이콘,이미지
 import logo from '../../images/logo.png';
@@ -11,13 +14,88 @@ import { AiOutlineShopping } from 'react-icons/ai';
 import { FiTruck } from 'react-icons/fi';
 import { MdStorefront } from 'react-icons/md';
 import { MdOutlinePersonOutline } from 'react-icons/md';
+import { FaRegHeart } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  // 로그아웃
   const logout = () => {
     window.localStorage.removeItem('authorization');
     window.localStorage.removeItem('refresh-token');
     window.location.reload();
   };
+
+  //검색하기
+  const [search, setSearch] = useState();
+
+  const onChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    navigate(`/search/${search}`, {
+      state: {
+        result: result,
+        search: search,
+        // all: all,
+      },
+    });
+
+    setSearch('');
+  };
+  //-------------------------
+  //검색결과
+  const [result, setResult] = useState([
+    {
+      id: '',
+      name: '',
+      description: '',
+      price: '',
+      image_url: '',
+      subImage_url: '',
+    },
+  ]);
+
+  const fetchSearchItem = async () => {
+    const { data } = await api.get(
+      `products/search?keyword=${search}`
+    );
+    setResult(data.data.products);
+  };
+
+  useLayoutEffect(() => {
+    fetchSearchItem();
+  }, [search]);
+  //--------------------------
+  // const [all, setAll] = useState([
+  //   {
+  //     id: '',
+  //     name: '',
+  //     description: '',
+  //     price: '',
+  //   },
+  // ]);
+
+  // const fetchSearchItem = async () => {
+  //   const { data } = await api.get(`products`);
+  //   setAll(data);
+  // };
+
+  // useLayoutEffect(() => {
+  //   fetchSearchItem();
+  // }, [search]);
+  // console.log(all);
+  // const filter = all.filter((p) => {
+  //   return p
+  //     .replace(' ', '')
+  //     .toLocaleLowerCase()
+  //     .includes(search.toLocaleLowerCase());
+  // })
+
   return (
     <HeaderBox>
       <HeaderBoxIn>
@@ -26,7 +104,15 @@ const Header = () => {
         </Link>
 
         <GoSearch className="search" />
-        <HeaderInput placeholder="검색어 입력"></HeaderInput>
+        <form onSubmit={onSubmitHandler}>
+          <HeaderInput
+            type="text"
+            value={search}
+            onChange={onChange}
+            placeholder="검색어 입력"
+          ></HeaderInput>
+        </form>
+
         {localStorage.getItem('authorization') ? (
           <LogoutButton
             onClick={() => {
@@ -34,16 +120,15 @@ const Header = () => {
             }}
           >
             <MdOutlinePersonOutline className="icon" />
-            로그아웃
+            로그아웃하기
           </LogoutButton>
         ) : (
           <MainModalButton
-            buttonName="
-           Hej! 로그인 또는 가입하기"
+            buttonName="Hej! 로그인 또는 가입하기"
             content={<SideMenu />}
           ></MainModalButton>
         )}
-
+        <FaRegHeart className="heartIcon" />
         <Link to="/cart">
           <ShoppingCart>
             <AiOutlineShopping className="icon" />
@@ -89,6 +174,16 @@ const HeaderBox = styled.div`
     font-size: 22px;
     margin-right: 8px;
   }
+  .heartIcon {
+    border-radius: 100%;
+    padding: 10px;
+    margin: auto;
+    font-size: 39px;
+    margin-right: 10px;
+    :hover {
+      background-color: #eee;
+    }
+  }
 `;
 const HeaderBoxIn = styled.div`
   display: flex;
@@ -107,7 +202,7 @@ const HeaderLogo = styled.img`
   cursor: pointer;
 `;
 const HeaderInput = styled.input`
-  width: 1060px;
+  width: 1030px;
   height: 50px;
   border-radius: 40px;
   padding: 0 50px;
@@ -159,7 +254,7 @@ const LogoutButton = styled.button`
   font-weight: bold;
   padding: 10px 20px;
   font-size: 14px;
-  margin: 0 40px 0 60px;
+  margin: 0 40px 0 70px;
   display: flex;
   &:hover {
     background-color: #eee;
