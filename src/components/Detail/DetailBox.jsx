@@ -21,44 +21,70 @@ const DetailBox = () => {
     },
   ]);
 
+  const TOAST = () =>
+    toast(
+      `${item.name} 제품이 장바구니에 추가되었습니다. 장바구니로 이동합니다.`,
+      {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      }
+    );
+
   const navigate = useNavigate();
 
-  // 장바구니 추가
-  const addItem = async (id) => {
-    // 로그인 유무 확인
-    const token = localStorage.getItem('authorization');
+  // 로그인 유무 확인
+  const token = localStorage.getItem('authorization');
 
-    if (token) {
-      try {
-        const { data } = await api.post(`/auth/cart`, {
-          productId: id,
-          count: 1,
-        });
-        if (data.success) {
-          toast(
-            `${data.data.product.name} 제품이 장바구니에 추가되었습니다. 장바구니로 이동합니다.`,
-            {
-              position: 'top-right',
-              autoClose: 3000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'dark',
-            }
-          );
-          setTimeout(() => {
-            navigate('/cart');
-          }, 3000);
-        } else {
-          console.log('response-error', data);
-        }
-      } catch (error) {
-        console.log(error);
+  // 비회원 장바구니 추가
+  const getItem = localStorage.getItem('guest-cart');
+
+  const addLocalStorage = (item) => {
+    const parseItem = JSON.parse(getItem).push([item]);
+    const toString = JSON.stringify(parseItem);
+    localStorage.setItem('guest-cart', toString);
+  };
+
+  const guestAddItem = async (item) => {
+    TOAST();
+    setTimeout(() => {
+      navigate('/cart');
+    }, 3000);
+    getItem
+      ? addLocalStorage(item)
+      : localStorage.setItem(
+          'guest-cart',
+          `[{ 
+            id: ${item.id}, 
+            name: ${item.name}, 
+            image_url: ${item.image_url}, 
+            price: ${item.price}
+          }]`
+        );
+  };
+
+  // 회원 장바구니 추가
+  const addItem = async (id) => {
+    try {
+      const { data } = await api.post(`/auth/cart`, {
+        productId: id,
+        count: 1,
+      });
+      if (data.success) {
+        TOAST();
+        setTimeout(() => {
+          navigate('/cart');
+        }, 3000);
+      } else {
+        console.log('response-error', data);
       }
-    } else {
-      localStorage.setItem('cart', `productId : 테스트`);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -80,8 +106,11 @@ const DetailBox = () => {
     <DetailDiv>
       <ToastContainer />
       <DetailImg>
-        <img src={`${item.image_url}`} />
-        <img src={`${item.subImage_url}`} />
+        <img src={`${item.image_url}`} alt="메인이미지" />
+        <img
+          src={`${item.subImage_url}`}
+          alt="서브이미지"
+        />
       </DetailImg>
       <DetailInfo>
         <ProductTitle>
@@ -114,7 +143,7 @@ const DetailBox = () => {
         </InfoIn>
         <button
           onClick={() => {
-            addItem(item.id);
+            token ? addItem(item.id) : guestAddItem(item);
           }}
         >
           구매하기
@@ -151,7 +180,6 @@ const DetailInfo = styled.div`
   letter-spacing: -0.5px;
 
   button {
-    /* width: 330px; */
     width: 90%;
     margin: 40px 30px;
     border-radius: 50px;
